@@ -144,7 +144,6 @@ class ZdravstveniRadnik(Osoba):
             format_linije.format("Naziv", self.__naziv)
         ])
 
-
 class Doza:
 
     @property
