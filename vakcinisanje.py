@@ -37,6 +37,14 @@ class Osoba:
         self.__datumRodjenja = datumRodjenja
 
     @property
+    def datumRodjenjatoString(self):
+        format_linije = "{}"
+        return "\n".join([
+            "",
+            format_linije.format(self.__datumRodjenja.strftime("%d.%m.%Y. %H:%M:%S"))
+        ])
+
+    @property
     def pol(self):
         return self.__pol
 
@@ -98,15 +106,12 @@ class Gradjanin(Osoba):
     def listaSertifikata(self, listaSertifikata):
         self.__listaSertifikata.append(listaSertifikata)
 
-    def __init__(self, osoba, brojLicneKarte, listaDoza, listaPotvrda, sertifikat):
+    def __init__(self, osoba, brojLicneKarte):
         Osoba.__init__(self, osoba.jmbg, osoba.ime, osoba.prezime, osoba.datumRodjenja, osoba.pol)
         self.__brojLicneKarte = brojLicneKarte
         self.__listaDoza = []
-        self.__listaDoza.append(listaDoza)
         self.__listaPotvrda = []
-        self.__listaPotvrda.append(listaPotvrda)
         self.__listaSertifikata = []
-        self.__listaSertifikata.append(sertifikat)
 
     def __str__(self):
         format_linije = "{:>5}: {}"
@@ -116,7 +121,7 @@ class Gradjanin(Osoba):
             format_linije.format("Broj licne karte", self.__brojLicneKarte),
             format_linije.format("Lista doza", self.__listaDoza),
             format_linije.format("Lista potvrda", self.__listaPotvrda),
-            format_linije.format("Sertifikat", self.__sertifikat.sifra)
+            format_linije.format("Sertifikat", self.__listaSertifikata)
         ])
 
 
@@ -158,6 +163,14 @@ class Doza:
         self.__datum = datum
 
     @property
+    def datumtoString(self):
+        format_linije = "{}"
+        return "\n".join([
+            "",
+            format_linije.format(self.__datum.strftime("%d.%m.%Y. %H:%M:%S"))
+        ])
+
+    @property
     def vakcina(self):
         return self.__vakcina
 
@@ -167,7 +180,7 @@ class Doza:
 
     @property
     def zdrRadnik(self):
-        return self.zdrRadnik
+        return self.__zdrRadnik
 
     @zdrRadnik.setter
     def zdrRadnik(self, zdrRadnik):
@@ -280,6 +293,14 @@ class PotvrdaOIzvrsenojVakcinaciji:
         self.__datum = datum
 
     @property
+    def datumtoString(self):
+        format_linije = "{}"
+        return "\n".join([
+            "",
+            format_linije.format(self.__datum.strftime("%d.%m.%Y. %H:%M:%S"))
+        ])
+
+    @property
     def doza(self):
         return self.__doza
 
@@ -340,6 +361,14 @@ class DigitalniSertifikat:
     @datum.setter
     def datum(self, datum):
         self.__datum = datum
+
+    @property
+    def datumtoString(self):
+        format_linije = "{}"
+        return "\n".join([
+            "",
+            format_linije.format(self.__datum.strftime("%d.%m.%Y. %H:%M:%S"))
+        ])
 
     @property
     def gradjanin(self):
@@ -420,9 +449,9 @@ class Podaci:
             Osoba("1234567890118", "Nikolina3", "Nikolic", datetime.datetime(1996, 7, 23, 23, 54, 11), "Zensko"))
 
         gradjani = podaci.gradjani
-        gradjani.append(Gradjanin(osobe[0], 1234567890, "", "", ""))
-        gradjani.append(Gradjanin(osobe[2], 1234567891, "", "", ""))
-        gradjani.append(Gradjanin(osobe[5], 1234567892, "", "", ""))
+        gradjani.append(Gradjanin(osobe[0], 1234567890))
+        gradjani.append(Gradjanin(osobe[2], 1234567891))
+        gradjani.append(Gradjanin(osobe[5], 1234567892))
 
         zdrRadnici = podaci.zdrRadnici
         zdrRadnici.append(ZdravstveniRadnik(osobe[1], "Dom Zdravlja Novi Sad"))
@@ -457,9 +486,9 @@ class Podaci:
         potvrde.append(
             PotvrdaOIzvrsenojVakcinaciji(12345678, datetime.datetime(2022, 10, 12, 21, 21, 21), doze[2], gradjani[1],
                                          zdrRadnici[0]))
-        gradjani[0].listaSertifikata.append(potvrde[0])
-        gradjani[0].listaSertifikata.append(potvrde[1])
-        gradjani[1].listaSertifikata.append(potvrde[2])
+        gradjani[0].listaPotvrda.append(potvrde[0])
+        gradjani[0].listaPotvrda.append(potvrde[1])
+        gradjani[1].listaPotvrda.append(potvrde[2])
 
         return podaci
 

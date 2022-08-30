@@ -47,6 +47,7 @@ class GlavniProzor(Tk):
 
         self.title("Projektni zadatak")
         self.minsize(700, 400)
+        self.geometry('+350+100')
         # self.iconbitmap('c:/Users/Jovana/Desktop/ftn.ico')
         self.iconbitmap('c:/Users/korisnik/Desktop/InfoCentar za vakcinisanje/ftn.ico')
         # izbrisi ovu moju putanju i postavi ovu iznad svoju za sliku

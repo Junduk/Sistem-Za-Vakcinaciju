@@ -167,6 +167,10 @@ class PristupGradjanima(Toplevel):
 
                 self.title("Izmena")
                 self.minsize(400, 200)
+                self.geometry('+350+100')
+                # self.iconbitmap('c:/Users/Jovana/Desktop/ftn.ico')
+                self.iconbitmap('c:/Users/korisnik/Desktop/InfoCentar za vakcinisanje/ftn.ico')
+                # izbrisi ovu moju putanju i postavi ovu iznad svoju za sliku
 
                 izmena_frame = Frame(self, padx=5, pady=5)
                 izmena_frame.pack(expand=1)
@@ -368,6 +372,10 @@ class PristupGradjanima(Toplevel):
 
                 self.title("Dodavanje")
                 self.minsize(400, 200)
+                self.geometry('+350+100')
+                # self.iconbitmap('c:/Users/Jovana/Desktop/ftn.ico')
+                self.iconbitmap('c:/Users/korisnik/Desktop/InfoCentar za vakcinisanje/ftn.ico')
+                # izbrisi ovu moju putanju i postavi ovu iznad svoju za sliku
 
                 dodavanje_frame = Frame(self, padx=5, pady=5)
                 dodavanje_frame.pack(expand=1)
@@ -449,6 +457,10 @@ class PristupGradjanima(Toplevel):
 
         self.title("Gradjani")
         self.minsize(400, 200)
+        self.geometry('+350+100')
+        # self.iconbitmap('c:/Users/Jovana/Desktop/ftn.ico')
+        self.iconbitmap('c:/Users/korisnik/Desktop/InfoCentar za vakcinisanje/ftn.ico')
+        # izbrisi ovu moju putanju i postavi ovu iznad svoju za sliku
 
         gradjanin_frame = Frame(self, padx=5, pady=5)
         gradjanin_frame.pack(expand=1)
@@ -530,31 +542,50 @@ class PristupGradjanima(Toplevel):
             self.brisanje(indeks)
 
     def indeksiranje3(self):
-        broj = self.__lista_listbox.curselection()[0]
-        naziv = self.__lista_listbox.get(broj)
-        indeks = 0
-        for i in self.__podaci.gradjani:
-            if naziv == str(i.ime + " " + i.prezime):
-                indeks = self.__podaci.gradjani.index(i)
-        self.lista_doza(self.__podaci.gradjani[indeks].listaDoza)
+        try:
+            broj = self.__lista_listbox.curselection()[0]
+            naziv = self.__lista_listbox.get(broj)
+            indeks = 0
+            for i in self.__podaci.gradjani:
+                if naziv == str(i.ime + " " + i.prezime):
+                    indeks = self.__podaci.gradjani.index(i)
+            if len(self.__podaci.gradjani[indeks].listaDoza) == 0:
+                messagebox.showerror("Greška", "Osoba ne poseduje informacije o primljenoj dozi!")
+            else:
+                self.lista_doza(self.__podaci.gradjani[indeks].listaDoza)
+        except IndexError:
+            messagebox.showerror("Greška", "Izaberite osobu iz liste!")
+
 
     def indeksiranje4(self):
-        broj = self.__lista_listbox.curselection()[0]
-        naziv = self.__lista_listbox.get(broj)
-        indeks = 0
-        for i in self.__podaci.gradjani:
-            if naziv == str(i.ime + " " + i.prezime):
-                indeks = self.__podaci.gradjani.index(i)
-        self.lista_potvrda(self.__podaci.gradjani[indeks].listaPotvrda)
+        try:
+            broj = self.__lista_listbox.curselection()[0]
+            naziv = self.__lista_listbox.get(broj)
+            indeks = 0
+            for i in self.__podaci.gradjani:
+                if naziv == str(i.ime + " " + i.prezime):
+                    indeks = self.__podaci.gradjani.index(i)
+            if len(self.__podaci.gradjani[indeks].listaPotvrda) == 0:
+                messagebox.showerror("Greška", "Osoba ne poseduje informacije o potvrdi!")
+            else:
+                self.lista_potvrda(self.__podaci.gradjani[indeks].listaPotvrda)
+        except IndexError:
+            messagebox.showerror("Greška", "Izaberite osobu iz liste!")
 
     def indeksiranje5(self):
-        broj = self.__lista_listbox.curselection()[0]
-        naziv = self.__lista_listbox.get(broj)
-        indeks = 0
-        for i in self.__podaci.gradjani:
-            if naziv == str(i.ime + " " + i.prezime):
-                indeks = self.__podaci.gradjani.index(i)
-        self.lista_sertifikata(self.__podaci.gradjani[indeks].listaSertifikata)
+        try:
+            broj = self.__lista_listbox.curselection()[0]
+            naziv = self.__lista_listbox.get(broj)
+            indeks = 0
+            for i in self.__podaci.gradjani:
+                if naziv == str(i.ime + " " + i.prezime):
+                    indeks = self.__podaci.gradjani.index(i)
+            if len(self.__podaci.gradjani[indeks].listaSertifikata) == 0:
+                messagebox.showerror("Greška", "Osoba ne poseduje informacije o sertifikatu!")
+            else:
+                self.lista_sertifikata(self.__podaci.gradjani[indeks].listaSertifikata)
+        except IndexError:
+            messagebox.showerror("Greška", "Izaberite osobu iz liste!")
 
     def lista_doza(self, listaDoza):
         class Lista_doza(Toplevel):
@@ -573,6 +604,10 @@ class PristupGradjanima(Toplevel):
 
                 self.title("Lista doza")
                 self.minsize(400, 200)
+                self.geometry('+350+100')
+                # self.iconbitmap('c:/Users/Jovana/Desktop/ftn.ico')
+                self.iconbitmap('c:/Users/korisnik/Desktop/InfoCentar za vakcinisanje/ftn.ico')
+                # izbrisi ovu moju putanju i postavi ovu iznad svoju za sliku
 
                 lista_doza_frame = Frame(self, padx=5, pady=5)
                 lista_doza_frame.pack(expand=1)
@@ -600,20 +635,19 @@ class PristupGradjanima(Toplevel):
                 self.__izlaz_button.grid(row=6, column=1, sticky=W)
 
                 for x in listaDoza:
-                    self.__labela_zemlja["text"] = x
-                    self.__labela_datum_vakcinacije["text"] = self.__labela_datum_vakcinacije["text"] + x.vakcina.datum
-                    self.__labela_naziv_vakcine["text"] = self.__labela_naziv_vakcine["text"] + x.vakcina.naziv
-                    self.__labela_serijski_broj["text"] = self.__labela_serijski_broj["text"] + x.vakcina.serijskiBroj
-                    self.__labela_ime_zdr_radnika["text"] = self.__labela_ime_zdr_radnika["text"] + x.zdrRadnik.ime
-                    self.__labela_prezime_zdr_radnika["text"] = self.__labela_prezime_zdr_radnika["text"] + x.zdrRadnik.prezime
-                    self.__labela_zemlja["text"] = self.__labela_zemlja["text"] + x.zemlja
+                    self.__labela_datum_vakcinacije["text"] = self.__labela_datum_vakcinacije["text"] + x.datumtoString + ";\n"
+                    self.__labela_naziv_vakcine["text"] = self.__labela_naziv_vakcine["text"] + x.vakcina.naziv + ";\n"
+                    self.__labela_serijski_broj["text"] = self.__labela_serijski_broj["text"] + str(x.vakcina.serijskiBroj) + ";\n"
+                    self.__labela_ime_zdr_radnika["text"] = self.__labela_ime_zdr_radnika["text"] + x.zdrRadnik.ime + ";\n"
+                    self.__labela_prezime_zdr_radnika["text"] = self.__labela_prezime_zdr_radnika["text"] + x.zdrRadnik.prezime + ";\n"
+                    self.__labela_zemlja["text"] = self.__labela_zemlja["text"] + x.zemlja + ";\n"
 
         lista_doza_prozor = Lista_doza(self, self.__podaci)
         self.wait_window(lista_doza_prozor)
         if lista_doza_prozor.otkazano:
             return
 
-    def lista_potvrda(self, potvrda):
+    def lista_potvrda(self, listaPotvrda):
         class Lista_potvrda(Toplevel):
 
             def izlaz(self):
@@ -630,41 +664,54 @@ class PristupGradjanima(Toplevel):
 
                 self.title("Lista potvrda")
                 self.minsize(400, 200)
+                self.geometry('+350+100')
+                # self.iconbitmap('c:/Users/Jovana/Desktop/ftn.ico')
+                self.iconbitmap('c:/Users/korisnik/Desktop/InfoCentar za vakcinisanje/ftn.ico')
+                # izbrisi ovu moju putanju i postavi ovu iznad svoju za sliku
 
                 lista_potvrda_frame = Frame(self, padx=5, pady=5)
                 lista_potvrda_frame.pack(expand=1)
 
                 Label(lista_potvrda_frame, text="Sifra potvrde:").grid(row=0, sticky=E)
-                self.__labela_datum_vakcinacije = Label(lista_potvrda_frame, text=potvrda.sifra)
-                self.__labela_datum_vakcinacije.grid(row=0, column=1, sticky=W)
+                self.__labela_sifra = Label(lista_potvrda_frame, text="")
+                self.__labela_sifra.grid(row=0, column=1, sticky=W)
                 Label(lista_potvrda_frame, text="Datum izdavanja:").grid(row=1, sticky=E)
-                self.__labela_ime = Label(lista_potvrda_frame, text=potvrda.datum)
-                self.__labela_ime.grid(row=1, column=1, sticky=W)
+                self.__labela_datum = Label(lista_potvrda_frame, text="")
+                self.__labela_datum.grid(row=1, column=1, sticky=W)
                 Label(lista_potvrda_frame, text="Ime gradjanina:").grid(row=2, sticky=E)
-                self.__labela_prezime = Label(lista_potvrda_frame, text=potvrda.gradjanin.ime)
-                self.__labela_prezime.grid(row=2, column=1, sticky=W)
+                self.__labela_ime_gradjanina = Label(lista_potvrda_frame, text="")
+                self.__labela_ime_gradjanina.grid(row=2, column=1, sticky=W)
                 Label(lista_potvrda_frame, text="Prezime gradjanina:").grid(row=3, sticky=E)
-                self.__labela_datum_rodjenja = Label(lista_potvrda_frame, text=potvrda.gradjanin.prezime)
-                self.__labela_datum_rodjenja.grid(row=3, column=1, sticky=W)
+                self.__labela_prezime_gradjanina = Label(lista_potvrda_frame, text="")
+                self.__labela_prezime_gradjanina.grid(row=3, column=1, sticky=W)
                 Label(lista_potvrda_frame, text="Zdravstvena ustanova:").grid(row=4, sticky=E)
-                self.__labela_pol = Label(lista_potvrda_frame, text=potvrda.zdrRadnik.naziv)
-                self.__labela_pol.grid(row=4, column=1, sticky=W)
+                self.__labela_naziv_zdr_ustanove = Label(lista_potvrda_frame, text="")
+                self.__labela_naziv_zdr_ustanove.grid(row=4, column=1, sticky=W)
                 Label(lista_potvrda_frame, text="Ime zdravstvenog radnika:").grid(row=5, sticky=E)
-                self.__labela_broj_licne_karte = Label(lista_potvrda_frame, text=potvrda.zdrRadnik.ime)
-                self.__labela_broj_licne_karte.grid(row=5, column=1, sticky=W)
-                Label(lista_potvrda_frame, text="Prezime zdravstvenog radnika:").grid(row=5, sticky=E)
-                self.__labela_broj_licne_karte = Label(lista_potvrda_frame, text=potvrda.zdrRadnik.prezime)
-                self.__labela_broj_licne_karte.grid(row=6, column=1, sticky=W)
+                self.__labela_ime_zdr_radnika = Label(lista_potvrda_frame, text="")
+                self.__labela_ime_zdr_radnika.grid(row=5, column=1, sticky=W)
+                Label(lista_potvrda_frame, text="Prezime zdravstvenog radnika:").grid(row=6, sticky=E)
+                self.__labela_prezime_zdr_radnika = Label(lista_potvrda_frame, text="")
+                self.__labela_prezime_zdr_radnika.grid(row=6, column=1, sticky=W)
 
                 self.__izlaz_button = Button(lista_potvrda_frame, width=10, command=self.izlaz, text="Izlaz")
                 self.__izlaz_button.grid(row=7, column=1, sticky=W)
+
+                for x in listaPotvrda:
+                    self.__labela_sifra["text"] = self.__labela_sifra["text"] + str(x.sifra) + ";\n"
+                    self.__labela_datum["text"] = self.__labela_datum["text"] + x.datumtoString + ";\n"
+                    self.__labela_ime_gradjanina["text"] = self.__labela_ime_gradjanina["text"] + x.gradjanin.ime + ";\n"
+                    self.__labela_prezime_gradjanina["text"] = self.__labela_prezime_gradjanina["text"] + x.gradjanin.prezime + ";\n"
+                    self.__labela_naziv_zdr_ustanove["text"] = self.__labela_naziv_zdr_ustanove["text"] + x.zdrRadnik.naziv + ";\n"
+                    self.__labela_ime_zdr_radnika["text"] = self.__labela_ime_zdr_radnika["text"] + x.zdrRadnik.ime + ";\n"
+                    self.__labela_prezime_zdr_radnika["text"] = self.__labela_prezime_zdr_radnika["text"] + x.zdrRadnik.prezime + ";\n"
 
         lista_potvrda_prozor = Lista_potvrda(self, self.__podaci)
         self.wait_window(lista_potvrda_prozor)
         if lista_potvrda_prozor.otkazano:
             return
 
-    def lista_sertifikata(self, sertifikat):
+    def lista_sertifikata(self, listaSertifikata):
         class Lista_sertifikata(Toplevel):
 
             def izlaz(self):
@@ -681,25 +728,35 @@ class PristupGradjanima(Toplevel):
 
                 self.title("Lista sertifikata")
                 self.minsize(400, 200)
+                self.geometry('+350+100')
+                # self.iconbitmap('c:/Users/Jovana/Desktop/ftn.ico')
+                self.iconbitmap('c:/Users/korisnik/Desktop/InfoCentar za vakcinisanje/ftn.ico')
+                # izbrisi ovu moju putanju i postavi ovu iznad svoju za sliku
 
                 lista_sertifikata_frame = Frame(self, padx=5, pady=5)
                 lista_sertifikata_frame.pack(expand=1)
 
                 Label(lista_sertifikata_frame, text="Sifra sertifikata:").grid(row=0, sticky=E)
-                self.__labela_datum_vakcinacije = Label(lista_sertifikata_frame, text=sertifikat.sifra)
-                self.__labela_datum_vakcinacije.grid(row=0, column=1, sticky=W)
+                self.__labela_sifra = Label(lista_sertifikata_frame, text="")
+                self.__labela_sifra.grid(row=0, column=1, sticky=W)
                 Label(lista_sertifikata_frame, text="Datum izdavanja:").grid(row=1, sticky=E)
-                self.__labela_ime = Label(lista_sertifikata_frame, text=sertifikat.datum)
-                self.__labela_ime.grid(row=1, column=1, sticky=W)
+                self.__labela_datum = Label(lista_sertifikata_frame, text="")
+                self.__labela_datum.grid(row=1, column=1, sticky=W)
                 Label(lista_sertifikata_frame, text="Ime gradjanina:").grid(row=2, sticky=E)
-                self.__labela_prezime = Label(lista_sertifikata_frame, text=sertifikat.gradjanin.ime)
-                self.__labela_prezime.grid(row=2, column=1, sticky=W)
+                self.__labela_gradjanin_ime = Label(lista_sertifikata_frame, text="")
+                self.__labela_gradjanin_ime.grid(row=2, column=1, sticky=W)
                 Label(lista_sertifikata_frame, text="Prezime gradjanina:").grid(row=3, sticky=E)
-                self.__labela_datum_rodjenja = Label(lista_sertifikata_frame, text=sertifikat.gradjanin.prezime)
-                self.__labela_datum_rodjenja.grid(row=3, column=1, sticky=W)
+                self.__labela_gradjanin_prezime = Label(lista_sertifikata_frame, text="")
+                self.__labela_gradjanin_prezime.grid(row=3, column=1, sticky=W)
 
                 self.__izlaz_button = Button(lista_sertifikata_frame, width=10, command=self.izlaz, text="Izlaz")
                 self.__izlaz_button.grid(row=4, column=1, sticky=W)
+
+                for x in listaSertifikata:
+                    self.__labela_sifra["text"] = self.__labela_sifra["text"] + str(x.sifra) + ";\n"
+                    self.__labela_datum["text"] = self.__labela_datum["text"] + x.datumtoString + ";\n"
+                    self.__labela_gradjanin_ime["text"] = self.__labela_gradjanin_ime["text"] + x.gradjanin.ime + ";\n"
+                    self.__labela_gradjanin_prezime["text"] = self.__labela_gradjanin_prezime["text"] + x.gradjanin.prezime + ";\n"
 
         lista_sertifikata_prozor = Lista_sertifikata(self, self.__podaci)
         self.wait_window(lista_sertifikata_prozor)
