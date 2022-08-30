@@ -451,10 +451,10 @@ class Podaci:
         gradjani = podaci.gradjani
         gradjani.append(Gradjanin(osobe[0], 1234567890))
         gradjani.append(Gradjanin(osobe[2], 1234567891))
-        gradjani.append(Gradjanin(osobe[5], 1234567892))
 
         zdrRadnici = podaci.zdrRadnici
         zdrRadnici.append(ZdravstveniRadnik(osobe[1], "Dom Zdravlja Novi Sad"))
+        zdrRadnici.append(ZdravstveniRadnik(osobe[5], "Dom Zdravlja Indjija"))
 
         vakcine = podaci.vakcine
         vakcine.append(Vakcina("Pfizer", 1234567890, "SAD", datetime.datetime(2023, 2, 20, 14, 14, 14)))

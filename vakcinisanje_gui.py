@@ -1,9 +1,12 @@
 from gradjani import *
+from zdravstveni_radnici import *
+
 
 class GlavniProzor(Tk):
 
     def komanda_izlaz(self):
-        odgovor = messagebox.askokcancel("Izlaz iz programa", "Da li ste sigurni da zelite napustiti aplikaciju?", icon="warning")
+        odgovor = messagebox.askokcancel("Izlaz iz programa", "Da li ste sigurni da zelite napustiti aplikaciju?",
+                                         icon="warning")
         if odgovor:
             self.destroy()
 
@@ -11,6 +14,12 @@ class GlavniProzor(Tk):
         gradjani_prozor = PristupGradjanima(self, self.__podaci)
         self.wait_window(gradjani_prozor)
         if gradjani_prozor.otkazano:
+            return
+
+    def komanda_radnici(self):
+        radnici_prozor = PristupZdravstvenimRadnicima(self, self.__podaci)
+        self.wait_window(radnici_prozor)
+        if radnici_prozor.otkazano:
             return
 
     def popuni_listbox(self, gradjani):
@@ -60,7 +69,7 @@ class GlavniProzor(Tk):
 
         self.__pristup_meni = Menu(meni_bar, tearoff=0)
         self.__pristup_meni.add_command(label="Gradjani", command=self.komanda_gradjani)
-        self.__pristup_meni.add_command(label="Zdravstveni radnici")
+        self.__pristup_meni.add_command(label="Zdravstveni radnici", command=self.komanda_radnici)
         self.__pristup_meni.add_command(label="Vakcine")
         self.__pristup_meni.add_command(label="Potvrde")
         self.__pristup_meni.add_command(label="Sertifikati")

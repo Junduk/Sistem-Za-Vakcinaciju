@@ -3,7 +3,23 @@ from tkinter import messagebox
 from vakcinisanje import *
 from tkinter.ttk import Combobox
 
+
 class PristupGradjanima(Toplevel):
+
+    def sortiranjeGradjana(self):
+        for x in self.__podaci.gradjani:
+            indeks = self.__podaci.gradjani.index(x)
+            if indeks != len(self.__podaci.gradjani) - 1:
+                i = self.__podaci.gradjanin[indeks + 1]
+                if x.ime < i.ime:
+                    k = x
+                    self.__podaci.gradjani[indeks] = i
+                    self.__podaci.gradjani[indeks + 1] = k
+                elif x.ime == i.ime:
+                    if x.prezime < i.prezime:
+                        k = x
+                        self.__podaci.gradjani[indeks] = i
+                        self.__podaci.gradjani[indeks + 1] = k
 
     def popuni_listu(self, gradjani):
         self.__lista_listbox.delete(0, END)
@@ -245,11 +261,14 @@ class PristupGradjanima(Toplevel):
         self.wait_window(izmena_prozor)
         if izmena_prozor.otkazano:
             return
-
+        self.sortiranjeGradjana()
         self.popuni_listu(self.__podaci.gradjani)
         self.__pretraga_entry["text"] = ""
+        self.__izmena_button['state'] = NORMAL
+        self.__obrisi_button['state'] = NORMAL
 
     def dodavanje(self):
+
         class Dodavanje(Toplevel):
 
             def izlaz(self):
@@ -285,7 +304,7 @@ class PristupGradjanima(Toplevel):
                     return
 
                 osoba = Osoba(jmbg, ime, prezime, datumRodjenja, pol)
-                gradjanin = Gradjanin(osoba, brojLicneKarte, "", "", "")
+                gradjanin = Gradjanin(osoba, brojLicneKarte)
                 self.__podaci.gradjani.append(gradjanin)
 
                 self.update()
@@ -447,7 +466,10 @@ class PristupGradjanima(Toplevel):
         if dodavanje_prozor.otkazano:
             return
 
+        self.__podaci.gradjani = sorted(self.__podaci.gradjani.ime)
         self.popuni_listu(self.__podaci.gradjani)
+        self.__izmena_button['state'] = NORMAL
+        self.__obrisi_button['state'] = NORMAL
         self.__pretraga_entry["text"] = ""
 
     def __init__(self, root, podaci):
@@ -504,10 +526,12 @@ class PristupGradjanima(Toplevel):
         self.__lista_doza_button = Button(gradjanin_frame, width=10, command=self.indeksiranje3, text="Lista doza")
         self.__lista_doza_button.grid(row=11, column=1, sticky=W)
 
-        self.__lista_potvrda_button = Button(gradjanin_frame, width=10, command=self.indeksiranje4, text="Lista potvrda")
+        self.__lista_potvrda_button = Button(gradjanin_frame, width=10, command=self.indeksiranje4,
+                                             text="Lista potvrda")
         self.__lista_potvrda_button.grid(row=12, column=1, sticky=W)
 
-        self.__lista_sertifikata_button = Button(gradjanin_frame, width=10, command=self.indeksiranje5, text="Lista sertifikata")
+        self.__lista_sertifikata_button = Button(gradjanin_frame, width=10, command=self.indeksiranje5,
+                                                 text="Lista sertifikata")
         self.__lista_sertifikata_button.grid(row=13, column=1, sticky=W)
 
         self.popuni_listu(self.__podaci.gradjani)
@@ -556,7 +580,6 @@ class PristupGradjanima(Toplevel):
         except IndexError:
             messagebox.showerror("Greška", "Izaberite osobu iz liste!")
 
-
     def indeksiranje4(self):
         try:
             broj = self.__lista_listbox.curselection()[0]
@@ -588,6 +611,7 @@ class PristupGradjanima(Toplevel):
             messagebox.showerror("Greška", "Izaberite osobu iz liste!")
 
     def lista_doza(self, listaDoza):
+
         class Lista_doza(Toplevel):
 
             def izlaz(self):
@@ -635,11 +659,15 @@ class PristupGradjanima(Toplevel):
                 self.__izlaz_button.grid(row=6, column=1, sticky=W)
 
                 for x in listaDoza:
-                    self.__labela_datum_vakcinacije["text"] = self.__labela_datum_vakcinacije["text"] + x.datumtoString + ";\n"
+                    self.__labela_datum_vakcinacije["text"] = self.__labela_datum_vakcinacije[
+                                                                  "text"] + x.datumtoString + ";\n"
                     self.__labela_naziv_vakcine["text"] = self.__labela_naziv_vakcine["text"] + x.vakcina.naziv + ";\n"
-                    self.__labela_serijski_broj["text"] = self.__labela_serijski_broj["text"] + str(x.vakcina.serijskiBroj) + ";\n"
-                    self.__labela_ime_zdr_radnika["text"] = self.__labela_ime_zdr_radnika["text"] + x.zdrRadnik.ime + ";\n"
-                    self.__labela_prezime_zdr_radnika["text"] = self.__labela_prezime_zdr_radnika["text"] + x.zdrRadnik.prezime + ";\n"
+                    self.__labela_serijski_broj["text"] = self.__labela_serijski_broj["text"] + str(
+                        x.vakcina.serijskiBroj) + ";\n"
+                    self.__labela_ime_zdr_radnika["text"] = self.__labela_ime_zdr_radnika[
+                                                                "text"] + x.zdrRadnik.ime + ";\n"
+                    self.__labela_prezime_zdr_radnika["text"] = self.__labela_prezime_zdr_radnika[
+                                                                    "text"] + x.zdrRadnik.prezime + ";\n"
                     self.__labela_zemlja["text"] = self.__labela_zemlja["text"] + x.zemlja + ";\n"
 
         lista_doza_prozor = Lista_doza(self, self.__podaci)
@@ -648,6 +676,7 @@ class PristupGradjanima(Toplevel):
             return
 
     def lista_potvrda(self, listaPotvrda):
+
         class Lista_potvrda(Toplevel):
 
             def izlaz(self):
@@ -700,11 +729,16 @@ class PristupGradjanima(Toplevel):
                 for x in listaPotvrda:
                     self.__labela_sifra["text"] = self.__labela_sifra["text"] + str(x.sifra) + ";\n"
                     self.__labela_datum["text"] = self.__labela_datum["text"] + x.datumtoString + ";\n"
-                    self.__labela_ime_gradjanina["text"] = self.__labela_ime_gradjanina["text"] + x.gradjanin.ime + ";\n"
-                    self.__labela_prezime_gradjanina["text"] = self.__labela_prezime_gradjanina["text"] + x.gradjanin.prezime + ";\n"
-                    self.__labela_naziv_zdr_ustanove["text"] = self.__labela_naziv_zdr_ustanove["text"] + x.zdrRadnik.naziv + ";\n"
-                    self.__labela_ime_zdr_radnika["text"] = self.__labela_ime_zdr_radnika["text"] + x.zdrRadnik.ime + ";\n"
-                    self.__labela_prezime_zdr_radnika["text"] = self.__labela_prezime_zdr_radnika["text"] + x.zdrRadnik.prezime + ";\n"
+                    self.__labela_ime_gradjanina["text"] = self.__labela_ime_gradjanina[
+                                                               "text"] + x.gradjanin.ime + ";\n"
+                    self.__labela_prezime_gradjanina["text"] = self.__labela_prezime_gradjanina[
+                                                                   "text"] + x.gradjanin.prezime + ";\n"
+                    self.__labela_naziv_zdr_ustanove["text"] = self.__labela_naziv_zdr_ustanove[
+                                                                   "text"] + x.zdrRadnik.naziv + ";\n"
+                    self.__labela_ime_zdr_radnika["text"] = self.__labela_ime_zdr_radnika[
+                                                                "text"] + x.zdrRadnik.ime + ";\n"
+                    self.__labela_prezime_zdr_radnika["text"] = self.__labela_prezime_zdr_radnika[
+                                                                    "text"] + x.zdrRadnik.prezime + ";\n"
 
         lista_potvrda_prozor = Lista_potvrda(self, self.__podaci)
         self.wait_window(lista_potvrda_prozor)
@@ -712,6 +746,7 @@ class PristupGradjanima(Toplevel):
             return
 
     def lista_sertifikata(self, listaSertifikata):
+
         class Lista_sertifikata(Toplevel):
 
             def izlaz(self):
@@ -756,7 +791,8 @@ class PristupGradjanima(Toplevel):
                     self.__labela_sifra["text"] = self.__labela_sifra["text"] + str(x.sifra) + ";\n"
                     self.__labela_datum["text"] = self.__labela_datum["text"] + x.datumtoString + ";\n"
                     self.__labela_gradjanin_ime["text"] = self.__labela_gradjanin_ime["text"] + x.gradjanin.ime + ";\n"
-                    self.__labela_gradjanin_prezime["text"] = self.__labela_gradjanin_prezime["text"] + x.gradjanin.prezime + ";\n"
+                    self.__labela_gradjanin_prezime["text"] = self.__labela_gradjanin_prezime[
+                                                                  "text"] + x.gradjanin.prezime + ";\n"
 
         lista_sertifikata_prozor = Lista_sertifikata(self, self.__podaci)
         self.wait_window(lista_sertifikata_prozor)
