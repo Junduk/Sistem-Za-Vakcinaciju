@@ -1,5 +1,6 @@
 from gradjani import *
 from zdravstveni_radnici import *
+from vakcina import *
 
 
 class GlavniProzor(Tk):
@@ -20,6 +21,30 @@ class GlavniProzor(Tk):
         radnici_prozor = PristupZdravstvenimRadnicima(self, self.__podaci)
         self.wait_window(radnici_prozor)
         if radnici_prozor.otkazano:
+            return
+
+    def komanda_vakcina(self):
+        vakcina_prozor = PristupVakcinama(self, self.__podaci)
+        self.wait_window(vakcina_prozor)
+        if vakcina_prozor.otkazano:
+            return
+
+    def komanda_doze(self):
+        doze_prozor = PristupDozama(self, self.__podaci)
+        self.wait_window(doze_prozor)
+        if doze_prozor.otkazano:
+            return
+
+    def komanda_vakcina2(self):
+        vakcina_prozor = PristupVakcinama(self, self.__podaci)
+        self.wait_window(vakcina_prozor)
+        if vakcina_prozor.otkazano:
+            return
+
+    def komanda_vakcina3(self):
+        vakcina_prozor = PristupVakcinama(self, self.__podaci)
+        self.wait_window(vakcina_prozor)
+        if vakcina_prozor.otkazano:
             return
 
     def popuni_listbox(self, gradjani):
@@ -70,7 +95,8 @@ class GlavniProzor(Tk):
         self.__pristup_meni = Menu(meni_bar, tearoff=0)
         self.__pristup_meni.add_command(label="Gradjani", command=self.komanda_gradjani)
         self.__pristup_meni.add_command(label="Zdravstveni radnici", command=self.komanda_radnici)
-        self.__pristup_meni.add_command(label="Vakcine")
+        self.__pristup_meni.add_command(label="Vakcine", command=self.komanda_vakcina)
+        self.__pristup_meni.add_command(label="Primljene doze", command=self.komanda_doze)
         self.__pristup_meni.add_command(label="Potvrde")
         self.__pristup_meni.add_command(label="Sertifikati")
         meni_bar.add_cascade(label="Pristup", menu=self.__pristup_meni)

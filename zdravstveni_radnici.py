@@ -192,6 +192,7 @@ class PristupZdravstvenimRadnicima(Toplevel):
                 self.__jmbg = StringVar(root)
                 self.__jmbg_entry = Entry(izmena_frame, width=20, textvariable=self.__jmbg)
                 self.__jmbg_entry.grid(row=0, column=1, sticky=W)
+                self.__jmbg_entry.delete(0, END)
                 self.__jmbg_entry.insert(0, self.__podaci.zdrRadnici[indeks].jmbg)
                 self.__jmbg_entry.config(state="disabled")
 
@@ -199,52 +200,74 @@ class PristupZdravstvenimRadnicima(Toplevel):
                 self.__ime = StringVar(root)
                 self.__ime_entry = Entry(izmena_frame, width=20, textvariable=self.__ime)
                 self.__ime_entry.grid(row=1, column=1, sticky=W)
+                self.__ime_entry.delete(0, END)
+                self.__ime_entry.insert(0, self.__podaci.zdrRadnici[indeks].ime)
 
                 Label(izmena_frame, text="Prezime:").grid(row=2, sticky=E)
                 self.__prezime = StringVar(root)
                 self.__prezime_entry = Entry(izmena_frame, width=20, textvariable=self.__prezime)
                 self.__prezime_entry.grid(row=2, column=1, sticky=W)
+                self.__prezime_entry.delete(0, END)
+                self.__prezime_entry.insert(0, self.__podaci.zdrRadnici[indeks].prezime)
 
                 Label(izmena_frame, text="Datum rodjenja:").grid(row=3, sticky=E)
 
                 pomocni_frame = Frame(izmena_frame, padx=5, pady=5)
                 pomocni_frame.grid(row=3, column=1, sticky=W)
 
+                pomoc = str(datetime.datetime.strptime(self.__podaci.zdrRadnici[indeks]
+                                                       .datumRodjenja, "%Y-%m-%d %H:%M:%S") \
+                            .strftime("%d/%m/%Y/%H/%M/%S")).split("/")
                 self.__vreme1 = IntVar(root)
                 self.__godina_spinbox = Spinbox(pomocni_frame, width=5, from_=1900, increment=1, to=2022,
                                                 textvariable=self.__vreme1)
                 self.__godina_spinbox.grid(row=0, column=0, sticky=W)
+                self.__godina_spinbox.delete(0, END)
+                self.__godina_spinbox.insert(0, pomoc[2])
                 self.__vreme2 = IntVar(root)
                 self.__mesec_spinbox = Spinbox(pomocni_frame, width=5, from_=1, increment=1, to=12,
                                                textvariable=self.__vreme2)
                 self.__mesec_spinbox.grid(row=0, column=1, sticky=W)
+                self.__mesec_spinbox.delete(0, END)
+                self.__mesec_spinbox.insert(0, pomoc[1])
                 self.__vreme3 = IntVar(root)
                 self.__dan_spinbox = Spinbox(pomocni_frame, width=5, from_=1, increment=1, to=31,
                                              textvariable=self.__vreme3)
                 self.__dan_spinbox.grid(row=0, column=2, sticky=W)
+                self.__dan_spinbox.delete(0, END)
+                self.__dan_spinbox.insert(0, pomoc[0])
                 self.__vreme4 = IntVar(root)
                 self.__sat_spinbox = Spinbox(pomocni_frame, width=5, from_=0, increment=1, to=24,
                                              textvariable=self.__vreme4)
                 self.__sat_spinbox.grid(row=0, column=3, sticky=W)
+                self.__sat_spinbox.delete(0, END)
+                self.__sat_spinbox.insert(0, pomoc[3])
                 self.__vreme5 = IntVar(root)
                 self.__minut_spinbox = Spinbox(pomocni_frame, width=5, from_=0, increment=1, to=60,
                                                textvariable=self.__vreme5)
                 self.__minut_spinbox.grid(row=0, column=4, sticky=W)
+                self.__minut_spinbox.delete(0, END)
+                self.__minut_spinbox.insert(0, pomoc[4])
                 self.__vreme6 = IntVar(root)
                 self.__sekund_spinbox = Spinbox(pomocni_frame, width=5, from_=0, increment=1, to=60,
                                                 textvariable=self.__vreme6)
                 self.__sekund_spinbox.grid(row=0, column=5, sticky=W)
+                self.__sekund_spinbox.delete(0, END)
+                self.__sekund_spinbox.insert(0, pomoc[5])
 
                 Label(izmena_frame, text="Pol:").grid(row=4, sticky=E)
                 self.__pol = StringVar(root)
                 self.__pol_combobox = Combobox(izmena_frame, textvariable=self.__pol)
                 self.__pol_combobox.grid(row=4, column=1, sticky=W)
                 self.__pol_combobox['values'] = ('Zensko', 'Musko')
+                self.__pol_combobox.delete(0, END)
+                self.__pol_combobox.insert(0, self.__podaci.zdrRadnici[indeks].pol)
 
                 Label(izmena_frame, text="Naziv radnog mesta:").grid(row=5, sticky=E)
                 self.__naziv_radnog_mesta = StringVar(root)
                 self.__naziv_radnog_mesta_entry = Entry(izmena_frame, width=20, textvariable=self.__naziv_radnog_mesta)
                 self.__naziv_radnog_mesta_entry.grid(row=5, column=1, sticky=W)
+                self.__naziv_radnog_mesta_entry.delete(0, END)
                 self.__naziv_radnog_mesta_entry.insert(0, self.__podaci.zdrRadnici[indeks].naziv)
 
                 self.__izmeni_button = Button(izmena_frame, width=10, command=self.izmeni, text="Izmeni")

@@ -152,6 +152,7 @@ class ZdravstveniRadnik(Osoba):
             format_linije.format("Naziv", self.__naziv)
         ])
 
+
 class Doza:
 
     @property
@@ -297,7 +298,7 @@ class PotvrdaOIzvrsenojVakcinaciji:
         format_linije = "{}"
         return "\n".join([
             "",
-            format_linije.format(self.__datum.strftime("%d.%m.%Y. %H:%M:%S"))
+            format_linije.format(datetime.datetime.strptime(self.__datum, "%Y-%m-%d %H:%M:%S"))
         ])
 
     @property
@@ -367,7 +368,7 @@ class DigitalniSertifikat:
         format_linije = "{}"
         return "\n".join([
             "",
-            format_linije.format(self.__datum.strftime("%d.%m.%Y. %H:%M:%S"))
+            format_linije.format(datetime.datetime.strptime(self.__datum, "%Y-%m-%d %H:%M:%S"))
         ])
 
     @property
@@ -438,15 +439,18 @@ class Podaci:
         podaci = Podaci()
 
         osobe = podaci.osobe
-        osobe.append(Osoba("1234567890123", "Petar1", "Petrovic", datetime.datetime(1991, 12, 1, 12, 22, 37), "Musko"))
         osobe.append(
-            Osoba("1234567890122", "Nikolina1", "Nikolic", datetime.datetime(1994, 7, 23, 23, 54, 11), "Zensko"))
-        osobe.append(Osoba("1234567890121", "Petar2", "Petrovic", datetime.datetime(1992, 12, 1, 12, 22, 37), "Musko"))
+            Osoba("1234567890123", "Petar1", "Petrovic", str(datetime.datetime(1991, 12, 1, 12, 22, 37)), "Musko"))
         osobe.append(
-            Osoba("1234567890120", "Nikolina2", "Nikolic", datetime.datetime(1995, 7, 23, 23, 54, 11), "Zensko"))
-        osobe.append(Osoba("1234567890119", "Petar3", "Petrovic", datetime.datetime(1993, 12, 1, 12, 22, 37), "Musko"))
+            Osoba("1234567890122", "Nikolina1", "Nikolic", str(datetime.datetime(1994, 7, 23, 23, 54, 11)), "Zensko"))
         osobe.append(
-            Osoba("1234567890118", "Nikolina3", "Nikolic", datetime.datetime(1996, 7, 23, 23, 54, 11), "Zensko"))
+            Osoba("1234567890121", "Petar2", "Petrovic", str(datetime.datetime(1992, 12, 1, 12, 22, 37)), "Musko"))
+        osobe.append(
+            Osoba("1234567890120", "Nikolina2", "Nikolic", str(datetime.datetime(1995, 7, 23, 23, 54, 11)), "Zensko"))
+        osobe.append(
+            Osoba("1234567890119", "Petar3", "Petrovic", str(datetime.datetime(1993, 12, 1, 12, 22, 37)), "Musko"))
+        osobe.append(
+            Osoba("1234567890118", "Nikolina3", "Nikolic", str(datetime.datetime(1996, 7, 23, 23, 54, 11)), "Zensko"))
 
         gradjani = podaci.gradjani
         gradjani.append(Gradjanin(osobe[0], 1234567890))
@@ -457,8 +461,8 @@ class Podaci:
         zdrRadnici.append(ZdravstveniRadnik(osobe[5], "Dom Zdravlja Indjija"))
 
         vakcine = podaci.vakcine
-        vakcine.append(Vakcina("Pfizer", 1234567890, "SAD", datetime.datetime(2023, 2, 20, 14, 14, 14)))
-        vakcine.append(Vakcina("Sputnik", 1234567891, "Rusija", datetime.datetime(2023, 6, 11, 15, 15, 15)))
+        vakcine.append(Vakcina("Pfizer", 1234567890, "SAD", str(datetime.datetime(2023, 2, 20, 14, 14, 14))))
+        vakcine.append(Vakcina("Sputnik", 1234567891, "Rusija", str(datetime.datetime(2023, 6, 11, 15, 15, 15))))
 
         doze = podaci.doze
         doze.append(Doza(datetime.datetime(2021, 10, 12, 16, 16, 16), vakcine[0], zdrRadnici[0], "SAD", gradjani[0]))
@@ -469,23 +473,23 @@ class Podaci:
         gradjani[1].listaDoza.append(doze[2])
 
         sertifikati = podaci.sertifikati
-        sertifikati.append(DigitalniSertifikat(12345678, datetime.datetime(2022, 3, 14, 13, 13, 13), gradjani[0]))
-        sertifikati.append(DigitalniSertifikat(12345678, datetime.datetime(2022, 3, 14, 13, 13, 13), gradjani[0]))
-        sertifikati.append(DigitalniSertifikat(12345678, datetime.datetime(2022, 3, 14, 13, 13, 13), gradjani[1]))
+        sertifikati.append(DigitalniSertifikat(12345678, str(datetime.datetime(2022, 3, 14, 13, 13, 13)), gradjani[0]))
+        sertifikati.append(DigitalniSertifikat(12345678, str(datetime.datetime(2022, 3, 14, 13, 13, 13)), gradjani[0]))
+        sertifikati.append(DigitalniSertifikat(12345678, str(datetime.datetime(2022, 3, 14, 13, 13, 13)), gradjani[1]))
         gradjani[0].listaSertifikata.append(sertifikati[0])
         gradjani[0].listaSertifikata.append(sertifikati[1])
         gradjani[1].listaSertifikata.append(sertifikati[2])
 
         potvrde = podaci.potvrde
         potvrde.append(
-            PotvrdaOIzvrsenojVakcinaciji(12345678, datetime.datetime(2021, 10, 12, 19, 19, 19), doze[0], gradjani[0],
-                                         zdrRadnici[0]))
+            PotvrdaOIzvrsenojVakcinaciji(12345678, str(datetime.datetime(2021, 10, 12, 19, 19, 19)), doze[0],
+                                         gradjani[0], zdrRadnici[0]))
         potvrde.append(
-            PotvrdaOIzvrsenojVakcinaciji(12345678, datetime.datetime(2022, 4, 12, 20, 20, 20), doze[1], gradjani[0],
-                                         zdrRadnici[0]))
+            PotvrdaOIzvrsenojVakcinaciji(12345678, str(datetime.datetime(2022, 4, 12, 20, 20, 20)), doze[1],
+                                         gradjani[0], zdrRadnici[0]))
         potvrde.append(
-            PotvrdaOIzvrsenojVakcinaciji(12345678, datetime.datetime(2022, 10, 12, 21, 21, 21), doze[2], gradjani[1],
-                                         zdrRadnici[0]))
+            PotvrdaOIzvrsenojVakcinaciji(12345678, str(datetime.datetime(2022, 10, 12, 21, 21, 21)), doze[2],
+                                         gradjani[1], zdrRadnici[0]))
         gradjani[0].listaPotvrda.append(potvrde[0])
         gradjani[0].listaPotvrda.append(potvrde[1])
         gradjani[1].listaPotvrda.append(potvrde[2])
