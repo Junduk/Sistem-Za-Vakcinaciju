@@ -10,7 +10,7 @@ class PristupGradjanima(Toplevel):
         for x in self.__podaci.gradjani:
             indeks = self.__podaci.gradjani.index(x)
             if indeks != len(self.__podaci.gradjani) - 1:
-                i = self.__podaci.gradjanin[indeks + 1]
+                i = self.__podaci.gradjani[indeks + 1]
                 if x.ime < i.ime:
                     k = x
                     self.__podaci.gradjani[indeks] = i
@@ -80,7 +80,7 @@ class PristupGradjanima(Toplevel):
         self.__pretraga_entry["text"] = ""
         self.ocisti_labele()
 
-    def izmena(self, indeks):
+    def izmena(self, indeks, jmbgIzmene):
 
         class Izmena(Toplevel):
 
@@ -266,6 +266,11 @@ class PristupGradjanima(Toplevel):
         self.__pretraga_entry["text"] = ""
         self.__izmena_button['state'] = NORMAL
         self.__obrisi_button['state'] = NORMAL
+        for x in self.__podaci.gradjani:
+            if x.jmbg == jmbgIzmene:
+                i = self.__podaci.gradjani.index(x)
+                self.__lista_listbox.select_set(i)
+                self.popuni_labele(self.__podaci.gradjani[i])
 
     def dodavanje(self):
 
@@ -550,7 +555,7 @@ class PristupGradjanima(Toplevel):
         for i in self.__podaci.gradjani:
             if naziv == str(i.ime + " " + i.prezime):
                 indeks = self.__podaci.gradjani.index(i)
-        self.izmena(indeks)
+        self.izmena(indeks, self.__podaci.gradjani[indeks].jmbg)
 
     def indeksiranje2(self):
         broj = self.__lista_listbox.curselection()[0]
