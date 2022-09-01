@@ -1,7 +1,6 @@
 from tkinter import *
 from tkinter import messagebox
 from vakcinisanje import *
-from tkinter.ttk import Combobox
 from datetime import date
 
 

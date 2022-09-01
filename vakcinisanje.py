@@ -41,7 +41,8 @@ class Osoba:
         format_linije = "{}"
         return "\n".join([
             "",
-            format_linije.format(self.__datumRodjenja.strftime("%d.%m.%Y. %H:%M:%S"))
+            format_linije.format(datetime.datetime.strptime(self.__datumRodjenja, "%Y-%m-%d %H:%M:%S"))
+            # format_linije.format(self.__datumRodjenja.strftime("%d.%m.%Y. %H:%M:%S"))
         ])
 
     @property
@@ -168,7 +169,8 @@ class Doza:
         format_linije = "{}"
         return "\n".join([
             "",
-            format_linije.format(self.__datum.strftime("%d.%m.%Y. %H:%M:%S"))
+            format_linije.format(datetime.datetime.strptime(str(self.__datum), "%Y-%m-%d %H:%M:%S"))
+            # format_linije.format(self.__datum.strftime("%d.%m.%Y. %H:%M:%S"))
         ])
 
     @property
@@ -196,19 +198,19 @@ class Doza:
         self.__zemlja = zemlja
 
     @property
-    def gradjanin(self):
-        return self.__gradjanin
+    def gradjani(self):
+        return self.__gradjani
 
-    @gradjanin.setter
-    def gradjanin(self, gradjanin):
-        self.__gradjanin = gradjanin
+    @gradjani.setter
+    def gradjani(self, gradjani):
+        self.__gradjani = gradjani
 
-    def __init__(self, datum, vakcina, zdrRadnik, zemlja, gradjanin):
+    def __init__(self, datum, vakcina, zdrRadnik, zemlja, gradjani):
         self.__datum = datum
         self.__vakcina = vakcina
         self.__zdrRadnik = zdrRadnik
         self.__zemlja = zemlja
-        self.__gradjanin = gradjanin
+        self.__gradjani = gradjani
 
     def __str__(self):
         format_linije = "{:>5}: {}"
@@ -217,9 +219,11 @@ class Doza:
             "",
             format_linije.format("Datum", self.__datum.strftime("%d.%m.%Y. %H:%M:%S")),
             format_linije.format("Vakcina", self.__vakcina.naziv),
-            format_linije.format("Zdravstveni radnik", self.__zdrRadnik.ime),
+            format_linije.format("Ime zdravstvenog radnika", self.__zdrRadnik.ime),
+            format_linije.format("Prezime zdravstvenog radnika", self.__zdrRadnik.prezime),
             format_linije.format("Zemlja", self.__zemlja),
-            format_linije.format("Gradjanin", self.__gradjanin.ime)
+            format_linije.format("Ime gradjanina", self.gradjani.ime),
+            format_linije.format("Prezime gradjanina", self.gradjani.prezime)
         ])
 
 
@@ -310,12 +314,12 @@ class PotvrdaOIzvrsenojVakcinaciji:
         self.__doza = doza
 
     @property
-    def gradjanin(self):
-        return self.__gradjanin
+    def gradjani(self):
+        return self.__gradjani
 
-    @gradjanin.setter
-    def gradjanin(self, gradjanin):
-        self.__gradjanin = gradjanin
+    @gradjani.setter
+    def gradjani(self, gradjani):
+        self.__gradjani = gradjani
 
     @property
     def zdrRadnik(self):
@@ -325,11 +329,11 @@ class PotvrdaOIzvrsenojVakcinaciji:
     def zdrRadnik(self, zdrRadnik):
         self.__zdrRadnik = zdrRadnik
 
-    def __init__(self, sifra, datum, doza, gradjanin, zdrRadnik):
+    def __init__(self, sifra, datum, doza, gradjani, zdrRadnik):
         self.__sifra = sifra
         self.__datum = datum
         self.__doza = doza
-        self.__gradjanin = gradjanin
+        self.__gradjani = gradjani
         self.__zdrRadnik = zdrRadnik
 
     def __str__(self):
@@ -340,7 +344,7 @@ class PotvrdaOIzvrsenojVakcinaciji:
             format_linije.format("Sifra", self.__sifra),
             format_linije.format("Datum", self.__datum.strftime("%d.%m.%Y. %H:%M:%S")),
             format_linije.format("Doza", self.__doza.vakcina.naziv),
-            format_linije.format("Gradjanin", self.__gradjanin.ime),
+            format_linije.format("Gradjanin", self.__gradjani.ime),
             format_linije.format("Zdravstveni radnik", self.__zdrRadnik.ime)
         ])
 
@@ -372,17 +376,17 @@ class DigitalniSertifikat:
         ])
 
     @property
-    def gradjanin(self):
-        return self.__gradjanin
+    def gradjani(self):
+        return self.__gradjani
 
-    @gradjanin.setter
-    def gradjanin(self, gradjanin):
-        self.__gradjanin = gradjanin
+    @gradjani.setter
+    def gradjani(self, gradjani):
+        self.__gradjani = gradjani
 
-    def __init__(self, sifra, datum, gradjanin):
+    def __init__(self, sifra, datum, gradjani):
         self.__sifra = sifra
         self.__datum = datum
-        self.__gradjanin = gradjanin
+        self.__gradjani = gradjani
 
     def __str__(self):
         format_linije = "{:>5}: {}"
@@ -391,7 +395,7 @@ class DigitalniSertifikat:
             "",
             format_linije.format("Sifra", self.__sifra),
             format_linije.format("Datum", self.__datum.strftime("%d.%m.%Y. %H:%M:%S")),
-            format_linije.format("Gradjanin", self.__gradjanin.ime)
+            format_linije.format("Gradjanin", self.__gradjani.ime)
         ])
 
 
