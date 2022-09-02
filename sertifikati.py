@@ -6,34 +6,28 @@ import datetime
 from datetime import date
 
 
-class PristupPotvrdama(Toplevel):
+class PristupSertifikatima(Toplevel):
 
-    def popuni_listu(self, potvrda):
+    def popuni_listu(self, sertifikat):
         self.__lista_listbox.delete(0, END)
-        for potvrde in potvrda:
+        for sertifikati in sertifikat:
             self.__lista_listbox.insert(END,
-                                        "{} {} {}".format(potvrde.gradjani.ime, potvrde.gradjani.prezime,
-                                                          potvrde.sifra))
+                                        "{} {} {}".format(sertifikati.gradjani.ime, sertifikati.gradjani.prezime,
+                                                          sertifikati.sifra))
         self.__izmena_button['state'] = DISABLED
         self.__obrisi_button['state'] = DISABLED
 
-    def popuni_labele(self, potvrda):
-        self.__labela_sifra["text"] = potvrda.sifra
-        self.__labela_datum_izdavanja["text"] = potvrda.datum
-        self.__labela_datum_vakcinacije["text"] = potvrda.doza.datum
-        self.__labela_gradjanin_ime["text"] = potvrda.gradjani.ime
-        self.__labela_gradjanin_prezime["text"] = potvrda.gradjani.prezime
-        self.__labela_radnik_ime["text"] = potvrda.zdrRadnik.ime
-        self.__labela_radnik_prezime["text"] = potvrda.zdrRadnik.prezime
+    def popuni_labele(self, sertifikat):
+        self.__labela_sifra["text"] = sertifikat.sifra
+        self.__labela_datum_izdavanja["text"] = sertifikat.datum
+        self.__labela_gradjanin_ime["text"] = sertifikat.gradjani.ime
+        self.__labela_gradjanin_prezime["text"] = sertifikat.gradjani.prezime
 
     def ocisti_labele(self):
         self.__labela_sifra["text"] = ""
         self.__labela_datum_izdavanja["text"] = ""
-        self.__labela_datum_vakcinacije["text"] = ""
         self.__labela_gradjanin_ime["text"] = ""
         self.__labela_gradjanin_prezime["text"] = ""
-        self.__labela_radnik_ime["text"] = ""
-        self.__labela_radnik_prezime["text"] = ""
 
     def promena_selekcije_u_listbox(self, event=None):
         if not self.__lista_listbox.curselection():
@@ -44,11 +38,11 @@ class PristupPotvrdama(Toplevel):
 
         indeks = self.__lista_listbox.curselection()[0]
         naziv = self.__lista_listbox.get(indeks)
-        potvrda = 0
-        for i in self.__podaci.potvrde:
+        sertifikat = 0
+        for i in self.__podaci.sertifikati:
             if str(i.gradjani.ime + " " + i.gradjani.prezime + " " + str(i.sifra)) == naziv:
-                potvrda = i
-        self.popuni_labele(potvrda)
+                sertifikat = i
+        self.popuni_labele(sertifikat)
 
         self.__izmena_button['state'] = NORMAL
         self.__obrisi_button['state'] = NORMAL
@@ -59,15 +53,15 @@ class PristupPotvrdama(Toplevel):
         self.__obrisi_button['state'] = DISABLED
         self.__lista_listbox.delete(0, END)
         text = self.__pretraga_entry.get()
-        for potvrda in self.__podaci.potvrde:
-            if text.upper() in str(potvrda.gradjani.ime + potvrda.gradjani.prezime).upper():
-                self.__lista_listbox.insert(END, "{} {}".format(potvrda.gradjani.ime, potvrda.gradjani.prezime))
+        for sertifikat in self.__podaci.sertifikati:
+            if text.upper() in str(sertifikat.gradjani.ime + sertifikat.gradjani.prezime).upper():
+                self.__lista_listbox.insert(END, "{} {}".format(sertifikat.gradjani.ime, sertifikat.gradjani.prezime))
 
     def brisanje(self, indeks):
-        self.__podaci.potvrde.pop(indeks)
+        self.__podaci.sertifikati.pop(indeks)
         self.update()
         Podaci.sacuvaj(self.__podaci)
-        self.popuni_listu(self.__podaci.potvrde)
+        self.popuni_listu(self.__podaci.sertifikati)
         self.__pretraga_entry["text"] = ""
         self.ocisti_labele()
 
@@ -91,23 +85,13 @@ class PristupPotvrdama(Toplevel):
                 if not datum:
                     return
 
-                doza = self.ogranicenje_doze()
-                if not doza:
+                gradjanin = self.ogranicenje_gradjanina()
+                if not gradjanin:
                     return
 
-                gradjani = self.ogranicenje_gradjanina()
-                if not gradjani:
-                    return
-
-                radnik = self.ogranicenje_radnika()
-                if not radnik:
-                    return
-
-                self.__podaci.potvrde[indeks].sifra = sifra
-                self.__podaci.potvrde[indeks].datum = datum
-                self.__podaci.potvrde[indeks].doza = doza
-                self.__podaci.potvrde[indeks].gradjani = gradjani
-                self.__podaci.potvrde[indeks].zdrRadnik = radnik
+                self.__podaci.sertifikati[indeks].sifra = sifra
+                self.__podaci.sertifikati[indeks].datum = datum
+                self.__podaci.sertifikati[indeks].gradjani = gradjanin
 
                 self.update()
                 Podaci.sacuvaj(self.__podaci)
@@ -220,15 +204,6 @@ class PristupPotvrdama(Toplevel):
                     return None
                 return str(datetime.datetime(godina, mesec, dan, sat, minut, sekunda))
 
-            def ogranicenje_doze(self):
-                doza = self.__doza_combobox.get()
-                if doza == "":
-                    messagebox.showerror("Greška", "Izaberite dozu!")
-                    return None
-                for i in self.__podaci.doza:
-                    if doza == i.gradjani.ime + " " + i.gradjani.prezime + " " + i.datum:
-                        return i
-
             def ogranicenje_gradjanina(self):
                 gradjanin = self.__gradjanin_combobox.get()
                 if gradjanin == "":
@@ -236,15 +211,6 @@ class PristupPotvrdama(Toplevel):
                     return None
                 for i in self.__podaci.gradjani:
                     if gradjanin == i.ime + " " + i.prezime + " " + i.jmbg:
-                        return i
-
-            def ogranicenje_radnika(self):
-                radnik = self.__radnik_combobox.get()
-                if radnik == "":
-                    messagebox.showerror("Greška", "Izaberite zdravstvenog radnika!")
-                    return None
-                for i in self.__podaci.zdrRadnici:
-                    if radnik == i.ime + " " + i.prezime + " " + i.jmbg:
                         return i
 
             def __init__(self, root, podaci):
@@ -267,14 +233,14 @@ class PristupPotvrdama(Toplevel):
                 self.__sifra_entry = Entry(dodavanje_frame, width=20, textvariable=self.__sifra)
                 self.__sifra_entry.grid(row=0, column=1, sticky=W)
                 self.__sifra_entry.delete(0, END)
-                self.__sifra_entry.insert(0, self.__podaci.potvrde[indeks].sifra)
+                self.__sifra_entry.insert(0, self.__podaci.sertifikati[indeks].sifra)
                 self.__sifra_entry.config(state="disabled")
 
                 Label(dodavanje_frame, text="Datum izdavanja:").grid(row=1, sticky=E)
 
                 pomocni_frame = Frame(dodavanje_frame, padx=5, pady=5)
                 pomocni_frame.grid(row=1, column=1, sticky=W)
-                pomoc = str(datetime.datetime.strptime(self.__podaci.potvrde[indeks].datum, "%Y-%m-%d %H:%M:%S") \
+                pomoc = str(datetime.datetime.strptime(self.__podaci.sertifikati[indeks].datum, "%Y-%m-%d %H:%M:%S") \
                             .strftime("%d/%m/%Y/%H/%M/%S")).split("/")
 
                 self.__vreme1 = IntVar(root)
@@ -314,57 +280,31 @@ class PristupPotvrdama(Toplevel):
                 self.__sekund_spinbox.delete(0, END)
                 self.__sekund_spinbox.insert(0, pomoc[5])
 
-                Label(dodavanje_frame, text="Doza:").grid(row=2, sticky=E)
-                self.__doza = StringVar(root)
-                self.__doza_combobox = Combobox(dodavanje_frame, textvariable=self.__doza, width=35)
-                self.__doza_combobox.grid(row=2, column=1, sticky=W)
-                self.__doza_combobox.delete(0, END)
-                self.__doza_combobox.insert(0, self.__podaci.potvrde[indeks].gradjani.ime + " "
-                                            + self.__podaci.potvrde[indeks].gradjani.prezime + " "
-                                            + self.__podaci.potvrde[indeks].datumtoString)
-                niz1 = []
-                for i in self.__podaci.doze:
-                    niz1.append(i.gradjani.ime + " " + i.gradjani.prezime + " " + i.datumtoString)
-                self.__doza_combobox['values'] = niz1
-
-                Label(dodavanje_frame, text="Gradjanin:").grid(row=3, sticky=E)
+                Label(dodavanje_frame, text="Gradjanin:").grid(row=2, sticky=E)
                 self.__gradjanin = StringVar(root)
                 self.__gradjanin_combobox = Combobox(dodavanje_frame, textvariable=self.__gradjanin, width=35)
-                self.__gradjanin_combobox.grid(row=3, column=1, sticky=W)
+                self.__gradjanin_combobox.grid(row=2, column=1, sticky=W)
                 self.__gradjanin_combobox.delete(0, END)
-                self.__gradjanin_combobox.insert(0, self.__podaci.potvrde[indeks].gradjani.ime + " "
-                                                 + self.__podaci.potvrde[indeks].gradjani.prezime + " "
-                                                 + self.__podaci.potvrde[indeks].gradjani.jmbg)
+                self.__gradjanin_combobox.insert(0, self.__podaci.sertifikati[indeks].gradjani.ime + " "
+                                                 + self.__podaci.sertifikati[indeks].gradjani.prezime + " "
+                                                 + self.__podaci.sertifikati[indeks].gradjani.jmbg)
                 niz2 = []
                 for i in self.__podaci.gradjani:
                     niz2.append(i.ime + " " + i.prezime + " " + i.jmbg)
                 self.__gradjanin_combobox['values'] = niz2
 
-                Label(dodavanje_frame, text="Zdravstveni radnik:").grid(row=4, sticky=E)
-                self.__radnik = StringVar(root)
-                self.__radnik_combobox = Combobox(dodavanje_frame, textvariable=self.__radnik, width=35)
-                self.__radnik_combobox.grid(row=4, column=1, sticky=W)
-                self.__radnik_combobox.delete(0, END)
-                self.__radnik_combobox.insert(0, self.__podaci.potvrde[indeks].zdrRadnik.ime + " "
-                                              + self.__podaci.potvrde[indeks].zdrRadnik.prezime + " "
-                                              + self.__podaci.potvrde[indeks].zdrRadnik.jmbg)
-                niz3 = []
-                for i in self.__podaci.zdrRadnici:
-                    niz3.append(i.ime + " " + i.prezime + " " + i.jmbg)
-                self.__radnik_combobox['values'] = niz3
-
                 self.__dodaj_button = Button(dodavanje_frame, width=10, command=self.izmeni, text="Izmeni")
-                self.__dodaj_button.grid(row=7, column=1, sticky=W)
+                self.__dodaj_button.grid(row=3, column=1, sticky=W)
 
                 self.__izlaz_button = Button(dodavanje_frame, width=10, command=self.izlaz, text="Izlaz")
-                self.__izlaz_button.grid(row=8, column=1, sticky=W)
+                self.__izlaz_button.grid(row=4, column=1, sticky=W)
 
         izmena_prozor = Izmena(self, self.__podaci)
         self.wait_window(izmena_prozor)
         if izmena_prozor.otkazano:
             return
 
-        self.popuni_listu(self.__podaci.potvrde)
+        self.popuni_listu(self.__podaci.sertifikati)
         self.__izmena_button['state'] = NORMAL
         self.__obrisi_button['state'] = NORMAL
         self.__pretraga_entry["text"] = ""
@@ -389,20 +329,12 @@ class PristupPotvrdama(Toplevel):
                 if not datum:
                     return
 
-                doza = self.ogranicenje_doze()
-                if not doza:
-                    return
-
                 gradjanin = self.ogranicenje_gradjanina()
                 if not gradjanin:
                     return
 
-                radnik = self.ogranicenje_radnika()
-                if not radnik:
-                    return
-
-                potvrda = Potvrda(sifra, datum, doza, gradjanin, radnik)
-                self.__podaci.potvrde.append(potvrda)
+                sertifikat = Sertifikat(sifra, datum, gradjanin)
+                self.__podaci.sertifikati.append(sertifikat)
 
                 self.update()
                 Podaci.sacuvaj(self.__podaci)
@@ -515,15 +447,6 @@ class PristupPotvrdama(Toplevel):
                     return None
                 return str(datetime.datetime(godina, mesec, dan, sat, minut, sekunda))
 
-            def ogranicenje_doze(self):
-                doza = self.__doza_combobox.get()
-                if doza == "":
-                    messagebox.showerror("Greška", "Izaberite dozu!")
-                    return None
-                for i in self.__podaci.doze:
-                    if doza == i.gradjani.ime + " " + i.gradjani.prezime + " " + i.datumtoString:
-                        return i
-
             def ogranicenje_gradjanina(self):
                 gradjanin = self.__gradjanin_combobox.get()
                 if gradjanin == "":
@@ -531,15 +454,6 @@ class PristupPotvrdama(Toplevel):
                     return None
                 for i in self.__podaci.gradjani:
                     if gradjanin == i.ime + " " + i.prezime + " " + i.jmbg:
-                        return i
-
-            def ogranicenje_radnika(self):
-                radnik = self.__radnik_combobox.get()
-                if radnik == "":
-                    messagebox.showerror("Greška", "Izaberite zdravstvenog radnika!")
-                    return None
-                for i in self.__podaci.zdrRadnici:
-                    if radnik == i.ime + " " + i.prezime + " " + i.jmbg:
                         return i
 
             def __init__(self, root, podaci):
@@ -592,45 +506,27 @@ class PristupPotvrdama(Toplevel):
                                                 textvariable=self.__vreme6)
                 self.__sekund_spinbox.grid(row=0, column=5, sticky=W)
 
-                Label(dodavanje_frame, text="Doza:").grid(row=2, sticky=E)
-                self.__doza = StringVar(root)
-                self.__doza_combobox = Combobox(dodavanje_frame, textvariable=self.__doza, width=35)
-                self.__doza_combobox.grid(row=2, column=1, sticky=W)
-                niz1 = []
-                for i in self.__podaci.doze:
-                    niz1.append(i.gradjani.ime + " " + i.gradjani.prezime + " " + i.datumtoString)
-                self.__doza_combobox['values'] = niz1
-
-                Label(dodavanje_frame, text="Gradjanin:").grid(row=3, sticky=E)
+                Label(dodavanje_frame, text="Gradjanin:").grid(row=2, sticky=E)
                 self.__gradjanin = StringVar(root)
                 self.__gradjanin_combobox = Combobox(dodavanje_frame, textvariable=self.__gradjanin, width=35)
-                self.__gradjanin_combobox.grid(row=3, column=1, sticky=W)
+                self.__gradjanin_combobox.grid(row=2, column=1, sticky=W)
                 niz2 = []
                 for i in self.__podaci.gradjani:
                     niz2.append(i.ime + " " + i.prezime + " " + i.jmbg)
                 self.__gradjanin_combobox['values'] = niz2
 
-                Label(dodavanje_frame, text="Zdravstveni radnik:").grid(row=4, sticky=E)
-                self.__radnik = StringVar(root)
-                self.__radnik_combobox = Combobox(dodavanje_frame, textvariable=self.__radnik, width=35)
-                self.__radnik_combobox.grid(row=4, column=1, sticky=W)
-                niz3 = []
-                for i in self.__podaci.zdrRadnici:
-                    niz3.append(i.ime + " " + i.prezime + " " + i.jmbg)
-                self.__radnik_combobox['values'] = niz3
-
                 self.__dodaj_button = Button(dodavanje_frame, width=10, command=self.dodaj, text="Dodaj")
-                self.__dodaj_button.grid(row=7, column=1, sticky=W)
+                self.__dodaj_button.grid(row=3, column=1, sticky=W)
 
                 self.__izlaz_button = Button(dodavanje_frame, width=10, command=self.izlaz, text="Izlaz")
-                self.__izlaz_button.grid(row=8, column=1, sticky=W)
+                self.__izlaz_button.grid(row=4, column=1, sticky=W)
 
         dodavanje_prozor = Dodavanje(self, self.__podaci)
         self.wait_window(dodavanje_prozor)
         if dodavanje_prozor.otkazano:
             return
 
-        self.popuni_listu(self.__podaci.potvrde)
+        self.popuni_listu(self.__podaci.sertifikati)
         self.__izmena_button['state'] = NORMAL
         self.__obrisi_button['state'] = NORMAL
         self.__pretraga_entry["text"] = ""
@@ -640,56 +536,47 @@ class PristupPotvrdama(Toplevel):
         self.__podaci = podaci
         self.__otkazano = True
 
-        self.title("Potvrde")
+        self.title("Digitalni sertifikati")
         self.minsize(400, 200)
         self.geometry('+350+100')
         # self.iconbitmap('c:/Users/Jovana/Desktop/ftn.ico')
         self.iconbitmap('c:/Users/korisnik/Desktop/InfoCentar za vakcinisanje/ftn.ico')
         # izbrisi ovu moju putanju i postavi ovu iznad svoju za sliku
 
-        potvrde_frame = Frame(self, padx=5, pady=5)
-        potvrde_frame.pack(expand=1)
+        sertifikati_frame = Frame(self, padx=5, pady=5)
+        sertifikati_frame.pack(expand=1)
 
-        self.__dodaj_button = Button(potvrde_frame, width=10, command=self.dodavanje, text="Dodaj")
+        self.__dodaj_button = Button(sertifikati_frame, width=10, command=self.dodavanje, text="Dodaj")
         self.__dodaj_button.grid(row=0, column=1, sticky=W)
 
-        self.__izmena_button = Button(potvrde_frame, width=10, command=self.indeksiranje1, text="Izmeni")
+        self.__izmena_button = Button(sertifikati_frame, width=10, command=self.indeksiranje1, text="Izmeni")
         self.__izmena_button.grid(row=1, column=1, sticky=W)
 
-        self.__obrisi_button = Button(potvrde_frame, width=10, command=self.indeksiranje2, text="Obrisi")
+        self.__obrisi_button = Button(sertifikati_frame, width=10, command=self.indeksiranje2, text="Obrisi")
         self.__obrisi_button.grid(row=2, column=1, sticky=W)
 
         self.__pretraga = StringVar(root)
         self.__pretraga.trace_add("write", self.filtriranje_listbox)
-        self.__pretraga_entry = Entry(potvrde_frame, width=20, textvariable=self.__pretraga)
+        self.__pretraga_entry = Entry(sertifikati_frame, width=20, textvariable=self.__pretraga)
         self.__pretraga_entry.grid(row=3, column=1, sticky=W)
 
-        self.__lista_listbox = Listbox(potvrde_frame, activestyle="none", exportselection=False, width=35)
+        self.__lista_listbox = Listbox(sertifikati_frame, activestyle="none", exportselection=False, width=35)
         self.__lista_listbox.grid(row=4, column=1, sticky=W)
 
-        Label(potvrde_frame, text="Sifra:").grid(row=5, sticky=E)
-        self.__labela_sifra = Label(potvrde_frame, text="")
+        Label(sertifikati_frame, text="Sifra:").grid(row=5, sticky=E)
+        self.__labela_sifra = Label(sertifikati_frame, text="")
         self.__labela_sifra.grid(row=5, column=1, sticky=W)
-        Label(potvrde_frame, text="Datum izdavanja potvrde:").grid(row=6, sticky=E)
-        self.__labela_datum_izdavanja = Label(potvrde_frame, text="")
+        Label(sertifikati_frame, text="Datum izdavanja sertifikata:").grid(row=6, sticky=E)
+        self.__labela_datum_izdavanja = Label(sertifikati_frame, text="")
         self.__labela_datum_izdavanja.grid(row=6, column=1, sticky=W)
-        Label(potvrde_frame, text="Datum vakcinacije:").grid(row=7, sticky=E)
-        self.__labela_datum_vakcinacije = Label(potvrde_frame, text="")
-        self.__labela_datum_vakcinacije.grid(row=7, column=1, sticky=W)
-        Label(potvrde_frame, text="Ime gradjanina:").grid(row=8, sticky=E)
-        self.__labela_gradjanin_ime = Label(potvrde_frame, text="")
-        self.__labela_gradjanin_ime.grid(row=8, column=1, sticky=W)
-        Label(potvrde_frame, text="Prezime gradjanina:").grid(row=9, sticky=E)
-        self.__labela_gradjanin_prezime = Label(potvrde_frame, text="")
-        self.__labela_gradjanin_prezime.grid(row=9, column=1, sticky=W)
-        Label(potvrde_frame, text="Ime zdravstvenog radnika:").grid(row=10, sticky=E)
-        self.__labela_radnik_ime = Label(potvrde_frame, text="")
-        self.__labela_radnik_ime.grid(row=10, column=1, sticky=W)
-        Label(potvrde_frame, text="Prezime zdravstvenog radnika:").grid(row=11, sticky=E)
-        self.__labela_radnik_prezime = Label(potvrde_frame, text="")
-        self.__labela_radnik_prezime.grid(row=11, column=1, sticky=W)
+        Label(sertifikati_frame, text="Ime gradjanina:").grid(row=7, sticky=E)
+        self.__labela_gradjanin_ime = Label(sertifikati_frame, text="")
+        self.__labela_gradjanin_ime.grid(row=7, column=1, sticky=W)
+        Label(sertifikati_frame, text="Prezime gradjanina:").grid(row=8, sticky=E)
+        self.__labela_gradjanin_prezime = Label(sertifikati_frame, text="")
+        self.__labela_gradjanin_prezime.grid(row=8, column=1, sticky=W)
 
-        self.popuni_listu(self.__podaci.potvrde)
+        self.popuni_listu(self.__podaci.sertifikati)
         self.__lista_listbox.bind("<<ListboxSelect>>", self.promena_selekcije_u_listbox)
 
         self.transient(root)
@@ -702,20 +589,20 @@ class PristupPotvrdama(Toplevel):
         broj = self.__lista_listbox.curselection()[0]
         naziv = self.__lista_listbox.get(broj)
         indeks = 0
-        for i in self.__podaci.potvrde:
+        for i in self.__podaci.sertifikati:
             if naziv == str(i.gradjani.ime + " " + i.gradjani.prezime + " " + str(i.sifra)):
-                indeks = self.__podaci.potvrde.index(i)
-        self.izmena(indeks, self.__podaci.potvrde[indeks].gradjani.jmbg)
+                indeks = self.__podaci.sertifikati.index(i)
+        self.izmena(indeks, self.__podaci.sertifikati[indeks].gradjani.jmbg)
 
     def indeksiranje2(self):
         broj = self.__lista_listbox.curselection()[0]
         naziv = self.__lista_listbox.get(broj)
         indeks = 0
-        for i in self.__podaci.potvrde:
+        for i in self.__podaci.sertifikati:
             if naziv == str(i.gradjani.ime + " " + i.gradjani.prezime + " " + str(i.sifra)):
-                indeks = self.__podaci.potvrde.index(i)
-        odgovor = messagebox.askokcancel("Brisanje potvrde",
-                                         "Brisanjem potvrde brisete i sve podatke vezane za nju. Da li ste sigurni da zelite da izbrisete potvrdu?",
+                indeks = self.__podaci.sertifikati.index(i)
+        odgovor = messagebox.askokcancel("Brisanje sertifikata",
+                                         "Brisanjem sertifikata brisete i sve podatke vezane za njega. Da li ste sigurni da zelite da izbrisete sertifikat?",
                                          icon="warning")
         if odgovor:
             self.brisanje(indeks)
