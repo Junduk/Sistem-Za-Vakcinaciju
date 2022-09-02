@@ -335,6 +335,9 @@ class PristupSertifikatima(Toplevel):
 
                 sertifikat = Sertifikat(sifra, datum, gradjanin)
                 self.__podaci.sertifikati.append(sertifikat)
+                for i in self.__podaci.gradjani:
+                    if i.jmbg == gradjanin.jmbg:
+                        i.listaSertifikata.append(sertifikat)
 
                 self.update()
                 Podaci.sacuvaj(self.__podaci)

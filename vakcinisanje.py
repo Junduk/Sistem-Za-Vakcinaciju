@@ -41,8 +41,7 @@ class Osoba:
         format_linije = "{}"
         return "\n".join([
             "",
-            format_linije.format(datetime.datetime.strptime(self.__datumRodjenja, "%Y-%m-%d %H:%M:%S"))
-            # format_linije.format(self.__datumRodjenja.strftime("%d.%m.%Y. %H:%M:%S"))
+            format_linije.format(datetime.datetime.strptime(str(self.__datumRodjenja), "%Y-%m-%d %H:%M:%S"))
         ])
 
     @property
@@ -167,10 +166,9 @@ class Doza:
     @property
     def datumtoString(self):
         format_linije = "{}"
-        return "\n".join([
+        return "".join([
             "",
             format_linije.format(datetime.datetime.strptime(str(self.__datum), "%Y-%m-%d %H:%M:%S"))
-            # format_linije.format(self.__datum.strftime("%d.%m.%Y. %H:%M:%S"))
         ])
 
     @property
@@ -300,9 +298,9 @@ class Potvrda:
     @property
     def datumtoString(self):
         format_linije = "{}"
-        return "\n".join([
+        return "".join([
             "",
-            format_linije.format(datetime.datetime.strptime(self.__datum, "%Y-%m-%d %H:%M:%S"))
+            format_linije.format(datetime.datetime.strptime(str(self.__datum), "%Y-%m-%d %H:%M:%S"))
         ])
 
     @property
@@ -372,7 +370,7 @@ class Sertifikat:
         format_linije = "{}"
         return "\n".join([
             "",
-            format_linije.format(datetime.datetime.strptime(self.__datum, "%Y-%m-%d %H:%M:%S"))
+            format_linije.format(datetime.datetime.strptime(str(self.__datum), "%Y-%m-%d %H:%M:%S"))
         ])
 
     @property

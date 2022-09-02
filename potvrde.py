@@ -225,8 +225,8 @@ class PristupPotvrdama(Toplevel):
                 if doza == "":
                     messagebox.showerror("Greška", "Izaberite dozu!")
                     return None
-                for i in self.__podaci.doza:
-                    if doza == i.gradjani.ime + " " + i.gradjani.prezime + " " + i.datum:
+                for i in self.__podaci.potvrde:
+                    if doza == i.gradjani.ime + " " + i.gradjani.prezime + " " + i.datumtoString:
                         return i
 
             def ogranicenje_gradjanina(self):
@@ -354,10 +354,10 @@ class PristupPotvrdama(Toplevel):
                 self.__radnik_combobox['values'] = niz3
 
                 self.__dodaj_button = Button(dodavanje_frame, width=10, command=self.izmeni, text="Izmeni")
-                self.__dodaj_button.grid(row=7, column=1, sticky=W)
+                self.__dodaj_button.grid(row=5, column=1, sticky=W)
 
                 self.__izlaz_button = Button(dodavanje_frame, width=10, command=self.izlaz, text="Izlaz")
-                self.__izlaz_button.grid(row=8, column=1, sticky=W)
+                self.__izlaz_button.grid(row=6, column=1, sticky=W)
 
         izmena_prozor = Izmena(self, self.__podaci)
         self.wait_window(izmena_prozor)
@@ -403,6 +403,9 @@ class PristupPotvrdama(Toplevel):
 
                 potvrda = Potvrda(sifra, datum, doza, gradjanin, radnik)
                 self.__podaci.potvrde.append(potvrda)
+                for i in self.__podaci.gradjani:
+                    if i.jmbg == gradjanin.jmbg:
+                        i.listaPotvrda.append(potvrda)
 
                 self.update()
                 Podaci.sacuvaj(self.__podaci)

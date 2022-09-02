@@ -264,7 +264,7 @@ class PristupVakcinama(Toplevel):
                                                        .rok, "%Y-%m-%d %H:%M:%S") \
                             .strftime("%d/%m/%Y/%H/%M/%S")).split("/")
                 self.__vreme1 = IntVar(root)
-                self.__godina_spinbox = Spinbox(pomocni_frame, width=5, from_=1900, increment=1, to=2022,
+                self.__godina_spinbox = Spinbox(pomocni_frame, width=5, from_=2022, increment=1, to=3000,
                                                 textvariable=self.__vreme1)
                 self.__godina_spinbox.grid(row=0, column=0, sticky=W)
                 self.__godina_spinbox.delete(0, END)
@@ -507,7 +507,7 @@ class PristupVakcinama(Toplevel):
                 pomocni_frame.grid(row=3, column=1, sticky=W)
                 pomoc = date.today().strftime("%d/%m/%Y").split("/")
                 self.__vreme1 = IntVar(root)
-                self.__godina_spinbox = Spinbox(pomocni_frame, width=5, from_=1900, increment=1, to=2022,
+                self.__godina_spinbox = Spinbox(pomocni_frame, width=5, from_=2022, increment=1, to=3000,
                                                 textvariable=self.__vreme1)
                 self.__godina_spinbox.grid(row=0, column=0, sticky=W)
                 self.__godina_spinbox.delete(0, END)
@@ -558,7 +558,7 @@ class PristupVakcinama(Toplevel):
         self.__podaci = podaci
         self.__otkazano = True
 
-        self.title("Gradjani")
+        self.title("Vakcine")
         self.minsize(400, 200)
         self.geometry('+350+100')
         # self.iconbitmap('c:/Users/Jovana/Desktop/ftn.ico')

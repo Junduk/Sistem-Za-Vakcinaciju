@@ -757,9 +757,9 @@ class PristupGradjanima(Toplevel):
                     self.__labela_sifra["text"] = self.__labela_sifra["text"] + str(x.sifra) + ";\n"
                     self.__labela_datum["text"] = self.__labela_datum["text"] + x.datumtoString + ";\n"
                     self.__labela_ime_gradjanina["text"] = self.__labela_ime_gradjanina[
-                                                               "text"] + x.gradjanin.ime + ";\n"
+                                                               "text"] + x.gradjani.ime + ";\n"
                     self.__labela_prezime_gradjanina["text"] = self.__labela_prezime_gradjanina[
-                                                                   "text"] + x.gradjanin.prezime + ";\n"
+                                                                   "text"] + x.gradjani.prezime + ";\n"
                     self.__labela_naziv_zdr_ustanove["text"] = self.__labela_naziv_zdr_ustanove[
                                                                    "text"] + x.zdrRadnik.naziv + ";\n"
                     self.__labela_ime_zdr_radnika["text"] = self.__labela_ime_zdr_radnika[
@@ -817,9 +817,9 @@ class PristupGradjanima(Toplevel):
                 for x in listaSertifikata:
                     self.__labela_sifra["text"] = self.__labela_sifra["text"] + str(x.sifra) + ";\n"
                     self.__labela_datum["text"] = self.__labela_datum["text"] + x.datumtoString + ";\n"
-                    self.__labela_gradjanin_ime["text"] = self.__labela_gradjanin_ime["text"] + x.gradjanin.ime + ";\n"
+                    self.__labela_gradjanin_ime["text"] = self.__labela_gradjanin_ime["text"] + x.gradjani.ime + ";\n"
                     self.__labela_gradjanin_prezime["text"] = self.__labela_gradjanin_prezime[
-                                                                  "text"] + x.gradjanin.prezime + ";\n"
+                                                                  "text"] + x.gradjani.prezime + ";\n"
 
         lista_sertifikata_prozor = Lista_sertifikata(self, self.__podaci)
         self.wait_window(lista_sertifikata_prozor)

@@ -265,7 +265,7 @@ class PristupDozama(Toplevel):
 
                 pomocni_frame = Frame(izmena_frame, padx=5, pady=5)
                 pomocni_frame.grid(row=0, column=1, sticky=W)
-                pomoc = str(datetime.datetime.strptime(self.__podaci.doze[indeks].datum, "%Y-%m-%d %H:%M:%S") \
+                pomoc = str(datetime.datetime.strptime(self.__podaci.doze[indeks].datumtoString, "%Y-%m-%d %H:%M:%S") \
                             .strftime("%d/%m/%Y/%H/%M/%S")).split("/")
 
                 self.__vreme1 = IntVar(root)
@@ -399,6 +399,9 @@ class PristupDozama(Toplevel):
 
                 doza = Doza(datum, vakcina, radnik, zemlja, gradjanin)
                 self.__podaci.doze.append(doza)
+                for i in self.__podaci.gradjani:
+                    if i.jmbg == gradjanin.jmbg:
+                        i.listaDoza.append(doza)
 
                 self.update()
                 Podaci.sacuvaj(self.__podaci)
