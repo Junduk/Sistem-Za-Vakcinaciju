@@ -279,7 +279,7 @@ class Vakcina:
         ])
 
 
-class PotvrdaOIzvrsenojVakcinaciji:
+class Potvrda:
 
     @property
     def sifra(self):
@@ -349,7 +349,7 @@ class PotvrdaOIzvrsenojVakcinaciji:
         ])
 
 
-class DigitalniSertifikat:
+class Sertifikat:
 
     @property
     def sifra(self):
@@ -477,22 +477,22 @@ class Podaci:
         gradjani[1].listaDoza.append(doze[2])
 
         sertifikati = podaci.sertifikati
-        sertifikati.append(DigitalniSertifikat(12345678, str(datetime.datetime(2022, 3, 14, 13, 13, 13)), gradjani[0]))
-        sertifikati.append(DigitalniSertifikat(12345678, str(datetime.datetime(2022, 3, 14, 13, 13, 13)), gradjani[0]))
-        sertifikati.append(DigitalniSertifikat(12345678, str(datetime.datetime(2022, 3, 14, 13, 13, 13)), gradjani[1]))
+        sertifikati.append(Sertifikat(12333378, str(datetime.datetime(2022, 3, 14, 13, 13, 13)), gradjani[0]))
+        sertifikati.append(Sertifikat(12344478, str(datetime.datetime(2022, 3, 14, 13, 13, 13)), gradjani[0]))
+        sertifikati.append(Sertifikat(12355578, str(datetime.datetime(2022, 3, 14, 13, 13, 13)), gradjani[1]))
         gradjani[0].listaSertifikata.append(sertifikati[0])
         gradjani[0].listaSertifikata.append(sertifikati[1])
         gradjani[1].listaSertifikata.append(sertifikati[2])
 
         potvrde = podaci.potvrde
         potvrde.append(
-            PotvrdaOIzvrsenojVakcinaciji(12345678, str(datetime.datetime(2021, 10, 12, 19, 19, 19)), doze[0],
+            Potvrda(33345678, str(datetime.datetime(2021, 10, 12, 19, 19, 19)), doze[0],
                                          gradjani[0], zdrRadnici[0]))
         potvrde.append(
-            PotvrdaOIzvrsenojVakcinaciji(12345678, str(datetime.datetime(2022, 4, 12, 20, 20, 20)), doze[1],
+            Potvrda(44345678, str(datetime.datetime(2022, 4, 12, 20, 20, 20)), doze[1],
                                          gradjani[0], zdrRadnici[0]))
         potvrde.append(
-            PotvrdaOIzvrsenojVakcinaciji(12345678, str(datetime.datetime(2022, 10, 12, 21, 21, 21)), doze[2],
+            Potvrda(55345678, str(datetime.datetime(2022, 10, 12, 21, 21, 21)), doze[2],
                                          gradjani[1], zdrRadnici[0]))
         gradjani[0].listaPotvrda.append(potvrde[0])
         gradjani[0].listaPotvrda.append(potvrde[1])

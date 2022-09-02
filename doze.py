@@ -251,7 +251,7 @@ class PristupDozama(Toplevel):
                 self.__podaci = podaci
                 self.__otkazano = True
 
-                self.title("Dodavanje")
+                self.title("Izmena")
                 self.minsize(400, 200)
                 self.geometry('+350+100')
                 # self.iconbitmap('c:/Users/Jovana/Desktop/ftn.ico')
@@ -349,7 +349,7 @@ class PristupDozama(Toplevel):
                     niz3.append(i.ime + " " + i.prezime + " " + i.jmbg)
                 self.__gradjanin_combobox['values'] = niz3
 
-                self.__dodaj_button = Button(izmena_frame, width=10, command=self.dodaj, text="Dodaj")
+                self.__dodaj_button = Button(izmena_frame, width=10, command=self.dodaj, text="Izmeni")
                 self.__dodaj_button.grid(row=6, column=1, sticky=W)
 
                 self.__izlaz_button = Button(izmena_frame, width=10, command=self.izlaz, text="Izlaz")
