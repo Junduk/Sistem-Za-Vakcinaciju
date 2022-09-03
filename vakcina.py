@@ -17,7 +17,7 @@ class PristupVakcinama(Toplevel):
         self.__labela_naziv["text"] = vakcine.naziv
         self.__labela_serijski_broj["text"] = vakcine.serijskiBroj
         self.__labela_poreklo["text"] = vakcine.poreklo
-        self.__labela_rok["text"] = vakcine.rok
+        self.__labela_rok["text"] = vakcine.roktoString
 
     def ocisti_labele(self):
         self.__labela_naziv["text"] = ""
@@ -261,8 +261,8 @@ class PristupVakcinama(Toplevel):
                 pomocni_frame = Frame(izmena_frame, padx=5, pady=5)
                 pomocni_frame.grid(row=3, column=1, sticky=W)
                 pomoc = str(datetime.datetime.strptime(self.__podaci.vakcine[indeks]
-                                                       .rok, "%d.%m.%y. %H:%M:%S") \
-                            .strftime("%d.%m.%y. %H:%M:%S")).split("/")
+                                                       .rok, "%Y-%m-%d %H:%M:%S") \
+                            .strftime("%d/%m/%Y/%H/%M/%S")).split("/")
                 self.__vreme1 = IntVar(root)
                 self.__godina_spinbox = Spinbox(pomocni_frame, width=5, from_=2022, increment=1, to=3000,
                                                 textvariable=self.__vreme1)

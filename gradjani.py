@@ -33,7 +33,7 @@ class PristupGradjanima(Toplevel):
         self.__labela_jmbg["text"] = gradjani.jmbg
         self.__labela_ime["text"] = gradjani.ime
         self.__labela_prezime["text"] = gradjani.prezime
-        self.__labela_datum_rodjenja["text"] = gradjani.datumRodjenja
+        self.__labela_datum_rodjenja["text"] = gradjani.datumRodjenjatoString
         self.__labela_pol["text"] = gradjani.pol
         self.__labela_broj_licne_karte["text"] = gradjani.brojLicneKarte
 
@@ -225,8 +225,8 @@ class PristupGradjanima(Toplevel):
                 self.__godina_spinbox.grid(row=0, column=0, sticky=W)
 
                 pomoc = str(datetime.datetime.strptime(self.__podaci.gradjani[indeks]
-                                                       .datumRodjenja, "%d.%m.%y. %H:%M:%S") \
-                            .strftime("%d.%m.%y. %H:%M:%S")).split("/")
+                                                       .datumRodjenja, "%Y-%m-%d %H:%M:%S") \
+                            .strftime("%d/%m/%Y/%H/%M/%S")).split("/")
                 self.__godina_spinbox.delete(0, END)
                 self.__godina_spinbox.insert(0, pomoc[2])
                 self.__vreme2 = IntVar(root)
@@ -495,6 +495,14 @@ class PristupGradjanima(Toplevel):
             return
 
         self.popuni_listu(self.__podaci.gradjani)
+
+        #index = -1
+        #for i in self.__lista_listbox:
+        #    index = index + 1
+        #    if i == self.__podaci.gradjani(END).ime + " " + self.__podaci.gradjani(END).prezime:
+        #        self.__lista_listbox.activate(index)
+        #        self.popuni_labele(self.__podaci.gradjani(END))
+
         self.__izmena_button['state'] = NORMAL
         self.__obrisi_button['state'] = NORMAL
         self.__pretraga_entry["text"] = ""

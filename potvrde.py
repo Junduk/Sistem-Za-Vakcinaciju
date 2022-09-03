@@ -19,8 +19,8 @@ class PristupPotvrdama(Toplevel):
 
     def popuni_labele(self, potvrda):
         self.__labela_sifra["text"] = potvrda.sifra
-        self.__labela_datum_izdavanja["text"] = potvrda.datum
-        self.__labela_datum_vakcinacije["text"] = potvrda.doza.datum
+        self.__labela_datum_izdavanja["text"] = potvrda.datumtoString
+        self.__labela_datum_vakcinacije["text"] = potvrda.doza.datumtoString
         self.__labela_gradjanin_ime["text"] = potvrda.gradjani.ime
         self.__labela_gradjanin_prezime["text"] = potvrda.gradjani.prezime
         self.__labela_radnik_ime["text"] = potvrda.zdrRadnik.ime
@@ -218,6 +218,7 @@ class PristupPotvrdama(Toplevel):
                 elif sekunda < 0 or sekunda > 59:
                     messagebox.showerror("Greška", "Ponovo unesite sekund!")
                     return None
+
                 return str(datetime.datetime(godina, mesec, dan, sat, minut, sekunda))
 
             def ogranicenje_doze(self):
@@ -274,8 +275,8 @@ class PristupPotvrdama(Toplevel):
 
                 pomocni_frame = Frame(dodavanje_frame, padx=5, pady=5)
                 pomocni_frame.grid(row=1, column=1, sticky=W)
-                pomoc = str(datetime.datetime.strptime(self.__podaci.potvrde[indeks].datum, "%d.%m.%y. %H:%M:%S") \
-                            .strftime("%d.%m.%y. %H:%M:%S")).split("/")
+                pomoc = str(datetime.datetime.strptime(self.__podaci.potvrde[indeks].datum, "%Y-%m-%d %H:%M:%S") \
+                            .strftime("%d/%m/%Y/%H/%M/%S")).split("/")
 
                 self.__vreme1 = IntVar(root)
                 self.__godina_spinbox = Spinbox(pomocni_frame, width=5, from_=2016, increment=1, to=3000,

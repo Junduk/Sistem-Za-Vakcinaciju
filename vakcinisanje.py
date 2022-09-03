@@ -41,7 +41,10 @@ class Osoba:
         format_linije = "{}"
         return "\n".join([
             "",
-            format_linije.format(datetime.datetime.strptime(str(self.__datumRodjenja), "%d.%m.%y. %H:%M:%S"))
+            format_linije.format(
+                datetime.datetime.strptime(str(self.__datumRodjenja), "%Y-%m-%d %H:%M:%S").strftime("%d.%m"
+                                                                                                    ".%Y. "
+                                                                                                    "%H:%M:%S"))
         ])
 
     @property
@@ -67,7 +70,7 @@ class Osoba:
             format_linije.format("JMBG", self.__jmbg),
             format_linije.format("Ime", self.__ime),
             format_linije.format("Prezime", self.__prezime),
-            format_linije.format("Datum rodjenja", self.__datumRodjenja.strftime("%d.%m.%y. %H:%M:%S")),
+            format_linije.format("Datum rodjenja", self.__datumRodjenja.strftime("%d.%m.%Y. %H:%M:%S")),
             format_linije.format("Pol", self.__pol)
         ])
 
@@ -168,7 +171,9 @@ class Doza:
         format_linije = "{}"
         return "".join([
             "",
-            format_linije.format(datetime.datetime.strptime(str(self.__datum), "%d.%m.%y. %H:%M:%S"))
+            format_linije.format(
+                datetime.datetime.strptime(str(self.__datum), "%Y-%m-%d %H:%M:%S").strftime("%d.%m.%Y. "
+                                                                                            "%H:%M:%S"))
         ])
 
     @property
@@ -215,7 +220,7 @@ class Doza:
 
         return "\n".join([
             "",
-            format_linije.format("Datum", self.__datum.strftime("%d.%m.%y. %H:%M:%S")),
+            format_linije.format("Datum", self.__datum.strftime("%d.%m.%Y. %H:%M:%S")),
             format_linije.format("Vakcina", self.__vakcina.naziv),
             format_linije.format("Ime zdravstvenog radnika", self.__zdrRadnik.ime),
             format_linije.format("Prezime zdravstvenog radnika", self.__zdrRadnik.prezime),
@@ -259,6 +264,17 @@ class Vakcina:
     def rok(self, rok):
         self.__rok = rok
 
+    @property
+    def roktoString(self):
+        format_linije = "{}"
+        return "".join([
+            "",
+            format_linije.format(
+                datetime.datetime.strptime(str(self.__rok), "%Y-%m-%d %H:%M:%S").strftime("%d.%m"
+                                                                                          ".%Y. "
+                                                                                          "%H:%M:%S"))
+        ])
+
     def __init__(self, naziv, serijskiBroj, poreklo, rok):
         self.__naziv = naziv
         self.__serijskiBroj = serijskiBroj
@@ -273,7 +289,7 @@ class Vakcina:
             format_linije.format("Naziv", self.__naziv),
             format_linije.format("Serijski broj", self.__serijskiBroj),
             format_linije.format("Zemlja porekla", self.__poreklo),
-            format_linije.format("Rok trajanja", self.__rok.strftime("%d.%m.%y. %H:%M:%S"))
+            format_linije.format("Rok trajanja", self.__rok.strftime("%d.%m.%Y. %H:%M:%S"))
         ])
 
 
@@ -300,7 +316,10 @@ class Potvrda:
         format_linije = "{}"
         return "".join([
             "",
-            format_linije.format(datetime.datetime.strptime(str(self.__datum), "%d.%m.%y. %H:%M:%S"))
+            format_linije.format(
+                datetime.datetime.strptime(str(self.__datum), "%Y-%m-%d %H:%M:%S").strftime("%d.%m"
+                                                                                            ".%Y. "
+                                                                                            "%H:%M:%S"))
         ])
 
     @property
@@ -340,7 +359,7 @@ class Potvrda:
         return "\n".join([
             "",
             format_linije.format("Sifra", self.__sifra),
-            format_linije.format("Datum", self.__datum.strftime("%d.%m.%y. %H:%M:%S")),
+            format_linije.format("Datum", self.__datum.strftime("%d.%m.%Y. %H:%M:%S")),
             format_linije.format("Doza", self.__doza.vakcina.naziv),
             format_linije.format("Gradjanin", self.__gradjani.ime),
             format_linije.format("Zdravstveni radnik", self.__zdrRadnik.ime)
@@ -370,7 +389,10 @@ class Sertifikat:
         format_linije = "{}"
         return "\n".join([
             "",
-            format_linije.format(datetime.datetime.strptime(str(self.__datum), "%d.%m.%y. %H:%M:%S"))
+            format_linije.format(
+                datetime.datetime.strptime(str(self.__datum), "%Y-%m-%d %H:%M:%S").strftime("%d.%m"
+                                                                                            ".%Y. "
+                                                                                            "%H:%M:%S"))
         ])
 
     @property
@@ -392,7 +414,7 @@ class Sertifikat:
         return "\n".join([
             "",
             format_linije.format("Sifra", self.__sifra),
-            format_linije.format("Datum", self.__datum.strftime("%d.%m.%y. %H:%M:%S")),
+            format_linije.format("Datum", self.__datum.strftime("%d.%m.%Y. %H:%M:%S")),
             format_linije.format("Gradjanin", self.__gradjani.ime)
         ])
 
@@ -467,9 +489,9 @@ class Podaci:
         vakcine.append(Vakcina("Sputnik", 1234567891, "Rusija", str(datetime.datetime(2023, 6, 11, 15, 15, 15))))
 
         doze = podaci.doze
-        doze.append(Doza(datetime.datetime(2021, 10, 12, 16, 16, 16), vakcine[0], zdrRadnici[0], "SAD", gradjani[0]))
-        doze.append(Doza(datetime.datetime(2022, 4, 12, 17, 17, 17), vakcine[0], zdrRadnici[0], "SAD", gradjani[0]))
-        doze.append(Doza(datetime.datetime(2022, 10, 12, 18, 18, 18), vakcine[1], zdrRadnici[0], "Rusija", gradjani[1]))
+        doze.append(Doza(str(datetime.datetime(2021, 10, 12, 16, 16, 16)), vakcine[0], zdrRadnici[0], "SAD", gradjani[0]))
+        doze.append(Doza(str(datetime.datetime(2022, 4, 12, 17, 17, 17)), vakcine[0], zdrRadnici[0], "SAD", gradjani[0]))
+        doze.append(Doza(str(datetime.datetime(2022, 10, 12, 18, 18, 18)), vakcine[1], zdrRadnici[0], "Rusija", gradjani[1]))
         gradjani[0].listaDoza.append(doze[0])
         gradjani[0].listaDoza.append(doze[1])
         gradjani[1].listaDoza.append(doze[2])
@@ -485,13 +507,13 @@ class Podaci:
         potvrde = podaci.potvrde
         potvrde.append(
             Potvrda(33345678, str(datetime.datetime(2021, 10, 12, 19, 19, 19)), doze[0],
-                                         gradjani[0], zdrRadnici[0]))
+                    gradjani[0], zdrRadnici[0]))
         potvrde.append(
             Potvrda(44345678, str(datetime.datetime(2022, 4, 12, 20, 20, 20)), doze[1],
-                                         gradjani[0], zdrRadnici[0]))
+                    gradjani[0], zdrRadnici[0]))
         potvrde.append(
             Potvrda(55345678, str(datetime.datetime(2022, 10, 12, 21, 21, 21)), doze[2],
-                                         gradjani[1], zdrRadnici[0]))
+                    gradjani[1], zdrRadnici[0]))
         gradjani[0].listaPotvrda.append(potvrde[0])
         gradjani[0].listaPotvrda.append(potvrde[1])
         gradjani[1].listaPotvrda.append(potvrde[2])

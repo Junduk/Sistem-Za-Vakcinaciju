@@ -17,7 +17,7 @@ class PristupZdravstvenimRadnicima(Toplevel):
         self.__labela_jmbg["text"] = radnici.jmbg
         self.__labela_ime["text"] = radnici.ime
         self.__labela_prezime["text"] = radnici.prezime
-        self.__labela_datum_rodjenja["text"] = radnici.datumRodjenja
+        self.__labela_datum_rodjenja["text"] = radnici.datumRodjenjatoString
         self.__labela_pol["text"] = radnici.pol
         self.__labela_naziv_radnog_mesta["text"] = radnici.naziv
 
@@ -216,8 +216,8 @@ class PristupZdravstvenimRadnicima(Toplevel):
                 pomocni_frame.grid(row=3, column=1, sticky=W)
 
                 pomoc = str(datetime.datetime.strptime(self.__podaci.zdrRadnici[indeks]
-                                                       .datumRodjenja, "%d.%m.%y. %H:%M:%S") \
-                            .strftime("%d.%m.%y. %H:%M:%S")).split("/")
+                                                       .datumRodjenja, "%Y-%m-%d %H:%M:%S") \
+                            .strftime("%d/%m/%Y/%H/%M/%S")).split("/")
                 self.__vreme1 = IntVar(root)
                 self.__godina_spinbox = Spinbox(pomocni_frame, width=5, from_=1900, increment=1, to=2022,
                                                 textvariable=self.__vreme1)
