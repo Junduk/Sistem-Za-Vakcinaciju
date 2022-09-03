@@ -225,8 +225,8 @@ class PristupGradjanima(Toplevel):
                 self.__godina_spinbox.grid(row=0, column=0, sticky=W)
 
                 pomoc = str(datetime.datetime.strptime(self.__podaci.gradjani[indeks]
-                                                       .datumRodjenja, "%Y-%m-%d %H:%M:%S") \
-                            .strftime("%d/%m/%Y/%H/%M/%S")).split("/")
+                                                       .datumRodjenja, "%d.%m.%y. %H:%M:%S") \
+                            .strftime("%d.%m.%y. %H:%M:%S")).split("/")
                 self.__godina_spinbox.delete(0, END)
                 self.__godina_spinbox.insert(0, pomoc[2])
                 self.__vreme2 = IntVar(root)

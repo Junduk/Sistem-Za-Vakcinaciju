@@ -41,7 +41,7 @@ class Osoba:
         format_linije = "{}"
         return "\n".join([
             "",
-            format_linije.format(datetime.datetime.strptime(str(self.__datumRodjenja), "%Y-%m-%d %H:%M:%S"))
+            format_linije.format(datetime.datetime.strptime(str(self.__datumRodjenja), "%d.%m.%y. %H:%M:%S"))
         ])
 
     @property
@@ -67,7 +67,7 @@ class Osoba:
             format_linije.format("JMBG", self.__jmbg),
             format_linije.format("Ime", self.__ime),
             format_linije.format("Prezime", self.__prezime),
-            format_linije.format("Datum rodjenja", self.__datumRodjenja.strftime("%d.%m.%Y. %H:%M:%S")),
+            format_linije.format("Datum rodjenja", self.__datumRodjenja.strftime("%d.%m.%y. %H:%M:%S")),
             format_linije.format("Pol", self.__pol)
         ])
 
@@ -168,7 +168,7 @@ class Doza:
         format_linije = "{}"
         return "".join([
             "",
-            format_linije.format(datetime.datetime.strptime(str(self.__datum), "%Y-%m-%d %H:%M:%S"))
+            format_linije.format(datetime.datetime.strptime(str(self.__datum), "%d.%m.%y. %H:%M:%S"))
         ])
 
     @property
@@ -215,7 +215,7 @@ class Doza:
 
         return "\n".join([
             "",
-            format_linije.format("Datum", self.__datum.strftime("%d.%m.%Y. %H:%M:%S")),
+            format_linije.format("Datum", self.__datum.strftime("%d.%m.%y. %H:%M:%S")),
             format_linije.format("Vakcina", self.__vakcina.naziv),
             format_linije.format("Ime zdravstvenog radnika", self.__zdrRadnik.ime),
             format_linije.format("Prezime zdravstvenog radnika", self.__zdrRadnik.prezime),
@@ -273,7 +273,7 @@ class Vakcina:
             format_linije.format("Naziv", self.__naziv),
             format_linije.format("Serijski broj", self.__serijskiBroj),
             format_linije.format("Zemlja porekla", self.__poreklo),
-            format_linije.format("Rok trajanja", self.__rok.strftime("%d.%m.%Y. %H:%M:%S"))
+            format_linije.format("Rok trajanja", self.__rok.strftime("%d.%m.%y. %H:%M:%S"))
         ])
 
 
@@ -300,7 +300,7 @@ class Potvrda:
         format_linije = "{}"
         return "".join([
             "",
-            format_linije.format(datetime.datetime.strptime(str(self.__datum), "%Y-%m-%d %H:%M:%S"))
+            format_linije.format(datetime.datetime.strptime(str(self.__datum), "%d.%m.%y. %H:%M:%S"))
         ])
 
     @property
@@ -340,7 +340,7 @@ class Potvrda:
         return "\n".join([
             "",
             format_linije.format("Sifra", self.__sifra),
-            format_linije.format("Datum", self.__datum.strftime("%d.%m.%Y. %H:%M:%S")),
+            format_linije.format("Datum", self.__datum.strftime("%d.%m.%y. %H:%M:%S")),
             format_linije.format("Doza", self.__doza.vakcina.naziv),
             format_linije.format("Gradjanin", self.__gradjani.ime),
             format_linije.format("Zdravstveni radnik", self.__zdrRadnik.ime)
@@ -370,7 +370,7 @@ class Sertifikat:
         format_linije = "{}"
         return "\n".join([
             "",
-            format_linije.format(datetime.datetime.strptime(str(self.__datum), "%Y-%m-%d %H:%M:%S"))
+            format_linije.format(datetime.datetime.strptime(str(self.__datum), "%d.%m.%y. %H:%M:%S"))
         ])
 
     @property
@@ -392,7 +392,7 @@ class Sertifikat:
         return "\n".join([
             "",
             format_linije.format("Sifra", self.__sifra),
-            format_linije.format("Datum", self.__datum.strftime("%d.%m.%Y. %H:%M:%S")),
+            format_linije.format("Datum", self.__datum.strftime("%d.%m.%y. %H:%M:%S")),
             format_linije.format("Gradjanin", self.__gradjani.ime)
         ])
 

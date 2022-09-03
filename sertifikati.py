@@ -240,8 +240,8 @@ class PristupSertifikatima(Toplevel):
 
                 pomocni_frame = Frame(dodavanje_frame, padx=5, pady=5)
                 pomocni_frame.grid(row=1, column=1, sticky=W)
-                pomoc = str(datetime.datetime.strptime(self.__podaci.sertifikati[indeks].datum, "%Y-%m-%d %H:%M:%S") \
-                            .strftime("%d/%m/%Y/%H/%M/%S")).split("/")
+                pomoc = str(datetime.datetime.strptime(self.__podaci.sertifikati[indeks].datum, "%d.%m.%y. %H:%M:%S") \
+                            .strftime("%d.%m.%y. %H:%M:%S")).split("/")
 
                 self.__vreme1 = IntVar(root)
                 self.__godina_spinbox = Spinbox(pomocni_frame, width=5, from_=2016, increment=1, to=3000,

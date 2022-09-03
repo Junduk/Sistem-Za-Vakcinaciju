@@ -216,8 +216,8 @@ class PristupZdravstvenimRadnicima(Toplevel):
                 pomocni_frame.grid(row=3, column=1, sticky=W)
 
                 pomoc = str(datetime.datetime.strptime(self.__podaci.zdrRadnici[indeks]
-                                                       .datumRodjenja, "%Y-%m-%d %H:%M:%S") \
-                            .strftime("%d/%m/%Y/%H/%M/%S")).split("/")
+                                                       .datumRodjenja, "%d.%m.%y. %H:%M:%S") \
+                            .strftime("%d.%m.%y. %H:%M:%S")).split("/")
                 self.__vreme1 = IntVar(root)
                 self.__godina_spinbox = Spinbox(pomocni_frame, width=5, from_=1900, increment=1, to=2022,
                                                 textvariable=self.__vreme1)
