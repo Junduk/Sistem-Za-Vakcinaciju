@@ -335,6 +335,10 @@ class PristupZdravstvenimRadnicima(Toplevel):
                 if len(jmbg) != 13:
                     messagebox.showerror("Greška", "JMBG mora sadrzati 13 cifara!")
                     return None
+                for i in self.__podaci.zdrRadnici:
+                    if i.jmbg == jmbg:
+                        messagebox.showerror("Greška", "U sistemu vec postoji osoba sa ovim JMBG-om!")
+                        return None
                 return jmbg
 
             def ogranicenje_ime(self):

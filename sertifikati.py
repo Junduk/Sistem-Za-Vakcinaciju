@@ -77,10 +77,6 @@ class PristupSertifikatima(Toplevel):
                 return self.__otkazano
 
             def izmeni(self):
-                sifra = self.ogranicenje_sifre()
-                if not sifra:
-                    return
-
                 datum = self.ogranicenje_datuma()
                 if not datum:
                     return
@@ -98,13 +94,6 @@ class PristupSertifikatima(Toplevel):
 
                 self.__otkazano = False
                 self.destroy()
-
-            def ogranicenje_sifre(self):
-                sifra = self.__sifra_entry.get()
-                if len(sifra) != 8:
-                    messagebox.showerror("Greška", "Sifra mora sadrzati 8 karaktera!")
-                    return None
-                return sifra
 
             def ogranicenje_datuma(self):
                 danas = date.today().strftime("%d/%m/%Y").split("/")
@@ -350,6 +339,10 @@ class PristupSertifikatima(Toplevel):
                 if len(sifra) != 8:
                     messagebox.showerror("Greška", "Sifra mora sadrzati 8 karaktera!")
                     return None
+                for i in self.__podaci.sertifikati:
+                    if i.sifra == sifra:
+                        messagebox.showerror("Greška", "U sistemu vec postoji sertifikat sa ovom sifrom!")
+                        return None
                 return sifra
 
             def ogranicenje_datuma(self):
@@ -549,7 +542,7 @@ class PristupSertifikatima(Toplevel):
         sertifikati_frame = Frame(self, padx=5, pady=5)
         sertifikati_frame.pack(expand=1)
 
-        self.__dodaj_button = Button(sertifikati_frame, width=10, command=self.dodavanje, text="Dodaj")
+        self.__dodaj_button = Button(sertifikati_frame, width=10, command=self.indeksiranje, text="Dodaj")
         self.__dodaj_button.grid(row=0, column=1, sticky=W)
 
         self.__izmena_button = Button(sertifikati_frame, width=10, command=self.indeksiranje1, text="Izmeni")
@@ -587,6 +580,13 @@ class PristupSertifikatima(Toplevel):
         self.focus_force()
         # programski izazvani događaji
         self.grab_set()  # modalni
+
+    def indeksiranje(self):
+        if len(self.__podaci.gradjani) == 0:
+            messagebox.showerror("Greška", "Dodajte gradjanina u sistem!")
+            return None
+        else:
+            self.dodavanje()
 
     def indeksiranje1(self):
         broj = self.__lista_listbox.curselection()[0]

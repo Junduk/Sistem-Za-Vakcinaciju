@@ -649,7 +649,7 @@ class PristupDozama(Toplevel):
         doze_frame = Frame(self, padx=5, pady=5)
         doze_frame.pack(expand=1)
 
-        self.__dodaj_button = Button(doze_frame, width=10, command=self.dodavanje, text="Dodaj")
+        self.__dodaj_button = Button(doze_frame, width=10, command=self.indeksiranje, text="Dodaj")
         self.__dodaj_button.grid(row=0, column=1, sticky=W)
 
         self.__izmena_button = Button(doze_frame, width=10, command=self.indeksiranje1, text="Izmeni")
@@ -697,6 +697,19 @@ class PristupDozama(Toplevel):
         # programski izazvani događaji
         self.grab_set()  # modalni
 
+    def indeksiranje(self):
+        if len(self.__podaci.gradjani) == 0:
+            messagebox.showerror("Greška", "Dodajte gradjanina u sistem!")
+            return None
+        elif len(self.__podaci.vakcine) == 0:
+            messagebox.showerror("Greška", "Dodajte vakcinu u sistem!")
+            return None
+        elif len(self.__podaci.zdrRadnici) == 0:
+            messagebox.showerror("Greška", "Dodajte zdravstvenog radnika u sistem!")
+            return None
+        else:
+            self.dodavanje()
+
     def indeksiranje1(self):
         broj = self.__lista_listbox.curselection()[0]
         naziv = self.__lista_listbox.get(broj)
@@ -714,7 +727,8 @@ class PristupDozama(Toplevel):
             if naziv == str(i.gradjani.ime + " " + i.gradjani.prezime + " " + i.datumtoString):
                 indeks = self.__podaci.doze.index(i)
         odgovor = messagebox.askokcancel("Brisanje doze",
-                                         "Brisanjem doze brisete i sve podatke vezane za nju. Da li ste sigurni da zelite da izbrisete dozu?",
+                                         "Brisanjem doze brisete i sve podatke vezane za nju. Da li ste sigurni da "
+                                         "zelite da izbrisete dozu?",
                                          icon="warning")
         if odgovor:
             self.brisanje(indeks)

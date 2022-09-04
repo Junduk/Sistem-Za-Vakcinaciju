@@ -364,6 +364,10 @@ class PristupVakcinama(Toplevel):
                 if len(serijskiBroj) != 10:
                     messagebox.showerror("Greška", "Serijski broj mora sadrzati 10 cifara!")
                     return None
+                for i in self.__podaci.vakcine:
+                    if i.serijskiBroj == serijskiBroj:
+                        messagebox.showerror("Greška", "U sistemu vec postoji vakcina sa ovim serijskim brojem!")
+                        return None
                 return serijskiBroj
 
             def ogranicenje_porekla(self):

@@ -83,10 +83,6 @@ class PristupPotvrdama(Toplevel):
                 return self.__otkazano
 
             def izmeni(self):
-                sifra = self.ogranicenje_sifre()
-                if not sifra:
-                    return
-
                 datum = self.ogranicenje_datuma()
                 if not datum:
                     return
@@ -103,7 +99,6 @@ class PristupPotvrdama(Toplevel):
                 if not radnik:
                     return
 
-                self.__podaci.potvrde[indeks].sifra = sifra
                 self.__podaci.potvrde[indeks].datum = datum
                 self.__podaci.potvrde[indeks].doza = doza
                 self.__podaci.potvrde[indeks].gradjani = gradjani
@@ -114,13 +109,6 @@ class PristupPotvrdama(Toplevel):
 
                 self.__otkazano = False
                 self.destroy()
-
-            def ogranicenje_sifre(self):
-                sifra = self.__sifra_entry.get()
-                if len(sifra) != 8:
-                    messagebox.showerror("Greška", "Sifra mora sadrzati 8 karaktera!")
-                    return None
-                return sifra
 
             def ogranicenje_datuma(self):
                 danas = date.today().strftime("%d/%m/%Y").split("/")
@@ -419,6 +407,10 @@ class PristupPotvrdama(Toplevel):
                 if len(sifra) != 8:
                     messagebox.showerror("Greška", "Sifra mora sadrzati 8 karaktera!")
                     return None
+                for i in self.__podaci.potvrde:
+                    if i.sifra == sifra:
+                        messagebox.showerror("Greška", "U sistemu vec postoji potvrda sa ovom sifrom!")
+                        return None
                 return sifra
 
             def ogranicenje_datuma(self):
@@ -654,7 +646,7 @@ class PristupPotvrdama(Toplevel):
         potvrde_frame = Frame(self, padx=5, pady=5)
         potvrde_frame.pack(expand=1)
 
-        self.__dodaj_button = Button(potvrde_frame, width=10, command=self.dodavanje, text="Dodaj")
+        self.__dodaj_button = Button(potvrde_frame, width=10, command=self.indeksiranje, text="Dodaj")
         self.__dodaj_button.grid(row=0, column=1, sticky=W)
 
         self.__izmena_button = Button(potvrde_frame, width=10, command=self.indeksiranje1, text="Izmeni")
@@ -701,6 +693,19 @@ class PristupPotvrdama(Toplevel):
         self.focus_force()
         # programski izazvani događaji
         self.grab_set()  # modalni
+
+    def indeksiranje(self):
+        if len(self.__podaci.gradjani) == 0:
+            messagebox.showerror("Greška", "Dodajte gradjanina u sistem!")
+            return None
+        elif len(self.__podaci.doze) == 0:
+            messagebox.showerror("Greška", "Dodajte primljenu dozu u sistem!")
+            return None
+        elif len(self.__podaci.zdrRadnici) == 0:
+            messagebox.showerror("Greška", "Dodajte zdravstvenog radnika u sistem!")
+            return None
+        else:
+            self.dodavanje()
 
     def indeksiranje1(self):
         broj = self.__lista_listbox.curselection()[0]

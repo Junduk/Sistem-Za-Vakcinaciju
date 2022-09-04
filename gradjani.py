@@ -346,6 +346,10 @@ class PristupGradjanima(Toplevel):
                 if len(jmbg) != 13:
                     messagebox.showerror("Greška", "JMBG mora sadrzati 13 cifara!")
                     return None
+                for i in self.__podaci.gradjani:
+                    if i.jmbg == jmbg:
+                        messagebox.showerror("Greška", "U sistemu vec postoji osoba sa ovim JMBG-om!")
+                        return None
                 return jmbg
 
             def ogranicenje_ime(self):
@@ -410,6 +414,10 @@ class PristupGradjanima(Toplevel):
                 if len(brojLicneKarte) != 10:
                     messagebox.showerror("Greška", "Broj licne karte mora sadrzati 10 cifara!")
                     return None
+                for i in self.__podaci.gradjani:
+                    if i.brojLicneKarte == brojLicneKarte:
+                        messagebox.showerror("Greška", "U sistemu vec postoji osoba sa ovim brojem licne karte!")
+                        return None
                 return brojLicneKarte
 
             def __init__(self, root, podaci):
