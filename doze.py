@@ -63,12 +63,28 @@ class PristupDozama(Toplevel):
                 self.__lista_listbox.insert(END, "{} {}".format(doza.gradjani.ime, doza.gradjani.prezime))
 
     def brisanje(self, indeks):
+        for i in range(len(self.__podaci.potvrde)):
+            if str(self.__podaci.potvrde[i].doza.gradjani.jmbg + self.__podaci.potvrde[i].doza.datum) == str(self.__podaci.doze[indeks].gradjani.jmbg + self.__podaci.doze[indeks].datum):
+                self.__podaci.potvrde.pop(i)
+                break
+        break_bool = FALSE
+        for i in self.__podaci.gradjani:
+            if break_bool == FALSE:
+                if i.jmbg == self.__podaci.doze[indeks].gradjani.jmbg:
+                    for k in range(len(i.listaDoza)):
+                        if i.listaDoza[k].datum == self.__podaci.doze[indeks].datum:
+                            i.listaDoza.pop(k)
+                            break_bool = TRUE
+                            break
+            else:
+                break
         self.__podaci.doze.pop(indeks)
         self.update()
         Podaci.sacuvaj(self.__podaci)
         self.popuni_listu(self.__podaci.doze)
         self.__pretraga_entry["text"] = ""
         self.ocisti_labele()
+
 
     def izmena(self, indeks, jmbgIzmene):
 
@@ -727,7 +743,7 @@ class PristupDozama(Toplevel):
             if naziv == str(i.gradjani.ime + " " + i.gradjani.prezime + " " + i.datumtoString):
                 indeks = self.__podaci.doze.index(i)
         odgovor = messagebox.askokcancel("Brisanje doze",
-                                         "Brisanjem doze brisete i sve podatke vezane za nju. Da li ste sigurni da "
+                                         "Brisanjem doze brisete i potvrdu vezanu za nju. Da li ste sigurni da "
                                          "zelite da izbrisete dozu?",
                                          icon="warning")
         if odgovor:

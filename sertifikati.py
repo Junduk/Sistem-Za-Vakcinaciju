@@ -58,6 +58,17 @@ class PristupSertifikatima(Toplevel):
                 self.__lista_listbox.insert(END, "{} {}".format(sertifikat.gradjani.ime, sertifikat.gradjani.prezime))
 
     def brisanje(self, indeks):
+        break_bool = FALSE
+        for i in self.__podaci.gradjani:
+            if break_bool == FALSE:
+                if i.jmbg == self.__podaci.sertifikati[indeks].gradjani.jmbg:
+                    for k in range(len(i.listaSertifikata)):
+                        if i.listaSertifikata[k].sifra == self.__podaci.sertifikati[indeks].sifra:
+                            i.listaSertifikata.pop(k)
+                            break_bool = TRUE
+                            break
+            else:
+                break
         self.__podaci.sertifikati.pop(indeks)
         self.update()
         Podaci.sacuvaj(self.__podaci)

@@ -506,13 +506,13 @@ class Podaci:
 
         potvrde = podaci.potvrde
         potvrde.append(
-            Potvrda(33345678, str(datetime.datetime(2021, 10, 12, 19, 19, 19)), doze[0],
+            Potvrda(33345678, str(datetime.datetime(2021, 10, 14, 19, 19, 19)), doze[0],
                     gradjani[0], zdrRadnici[0]))
         potvrde.append(
-            Potvrda(44345678, str(datetime.datetime(2022, 4, 12, 20, 20, 20)), doze[1],
+            Potvrda(44345678, str(datetime.datetime(2022, 4, 14, 20, 20, 20)), doze[1],
                     gradjani[0], zdrRadnici[0]))
         potvrde.append(
-            Potvrda(55345678, str(datetime.datetime(2022, 10, 12, 21, 21, 21)), doze[2],
+            Potvrda(55345678, str(datetime.datetime(2022, 10, 14, 21, 21, 21)), doze[2],
                     gradjani[1], zdrRadnici[0]))
         gradjani[0].listaPotvrda.append(potvrde[0])
         gradjani[0].listaPotvrda.append(potvrde[1])

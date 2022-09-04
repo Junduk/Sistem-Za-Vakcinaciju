@@ -64,6 +64,17 @@ class PristupPotvrdama(Toplevel):
                 self.__lista_listbox.insert(END, "{} {}".format(potvrda.gradjani.ime, potvrda.gradjani.prezime))
 
     def brisanje(self, indeks):
+        break_bool = FALSE
+        for i in self.__podaci.gradjani:
+            if break_bool == FALSE:
+                if i.jmbg == self.__podaci.potvrde[indeks].gradjani.jmbg:
+                    for k in range(len(i.listaPotvrda)):
+                        if i.listaPotvrda[k].sifra == self.__podaci.potvrde[indeks].sifra:
+                            i.listaPotvrda.pop(k)
+                            break_bool = TRUE
+                            break
+            else:
+                break
         self.__podaci.potvrde.pop(indeks)
         self.update()
         Podaci.sacuvaj(self.__podaci)
