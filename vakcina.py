@@ -50,7 +50,7 @@ class PristupVakcinama(Toplevel):
         self.__lista_listbox.delete(0, END)
         text = self.__pretraga_entry.get()
         for vakcina in self.__podaci.vakcine:
-            if text.upper() in str(vakcina.naziv + vakcina.serijskiBroj).upper():
+            if text.upper() in str(vakcina.naziv + " " + vakcina.serijskiBroj).upper():
                 self.__lista_listbox.insert(END, "{} {}".format(vakcina.naziv, vakcina.serijskiBroj))
 
     def brisanje(self, indeks):

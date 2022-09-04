@@ -70,7 +70,7 @@ class PristupGradjanima(Toplevel):
         self.__lista_listbox.delete(0, END)
         text = self.__pretraga_entry.get()
         for gradjanin in self.__podaci.gradjani:
-            if text.upper() in str(gradjanin.ime + gradjanin.prezime).upper():
+            if text.upper() in str(gradjanin.ime + " " + gradjanin.prezime).upper():
                 self.__lista_listbox.insert(END, "{} {}".format(gradjanin.ime, gradjanin.prezime))
 
     def brisanje(self, indeks):

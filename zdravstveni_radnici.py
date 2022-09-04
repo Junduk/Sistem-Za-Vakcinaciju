@@ -54,7 +54,7 @@ class PristupZdravstvenimRadnicima(Toplevel):
         self.__lista_listbox.delete(0, END)
         text = self.__pretraga_entry.get()
         for radnik in self.__podaci.zdrRadnici:
-            if text.upper() in str(radnik.ime + radnik.prezime).upper():
+            if text.upper() in str(radnik.ime + " " + radnik.prezime).upper():
                 self.__lista_listbox.insert(END, "{} {}".format(radnik.ime, radnik.prezime))
 
     def brisanje(self, indeks):

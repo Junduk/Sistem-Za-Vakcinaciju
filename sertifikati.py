@@ -54,8 +54,8 @@ class PristupSertifikatima(Toplevel):
         self.__lista_listbox.delete(0, END)
         text = self.__pretraga_entry.get()
         for sertifikat in self.__podaci.sertifikati:
-            if text.upper() in str(sertifikat.gradjani.ime + sertifikat.gradjani.prezime).upper():
-                self.__lista_listbox.insert(END, "{} {}".format(sertifikat.gradjani.ime, sertifikat.gradjani.prezime))
+            if text.upper() in str(sertifikat.gradjani.ime + " " + sertifikat.gradjani.prezime).upper():
+                self.__lista_listbox.insert(END, "{} {} {}".format(sertifikat.gradjani.ime, sertifikat.gradjani.prezime, str(sertifikat.sifra)))
 
     def brisanje(self, indeks):
         break_bool = FALSE

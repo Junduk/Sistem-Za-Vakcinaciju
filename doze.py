@@ -59,8 +59,8 @@ class PristupDozama(Toplevel):
         self.__lista_listbox.delete(0, END)
         text = self.__pretraga_entry.get()
         for doza in self.__podaci.doze:
-            if text.upper() in str(doza.gradjani.ime + doza.gradjani.prezime).upper():
-                self.__lista_listbox.insert(END, "{} {}".format(doza.gradjani.ime, doza.gradjani.prezime))
+            if text.upper() in str(doza.gradjani.ime + " " + doza.gradjani.prezime).upper():
+                self.__lista_listbox.insert(END, "{} {} {}".format(doza.gradjani.ime, doza.gradjani.prezime, doza.datumtoString))
 
     def brisanje(self, indeks):
         for i in range(len(self.__podaci.potvrde)):

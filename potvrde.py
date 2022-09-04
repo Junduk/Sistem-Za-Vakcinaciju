@@ -60,8 +60,9 @@ class PristupPotvrdama(Toplevel):
         self.__lista_listbox.delete(0, END)
         text = self.__pretraga_entry.get()
         for potvrda in self.__podaci.potvrde:
-            if text.upper() in str(potvrda.gradjani.ime + potvrda.gradjani.prezime).upper():
-                self.__lista_listbox.insert(END, "{} {}".format(potvrda.gradjani.ime, potvrda.gradjani.prezime))
+            if text.upper() in str(potvrda.gradjani.ime + " " + potvrda.gradjani.prezime).upper():
+                self.__lista_listbox.insert(END, "{} {} {}".format(potvrda.gradjani.ime, potvrda.gradjani.prezime,
+                                                                   str(potvrda.sifra)))
 
     def brisanje(self, indeks):
         break_bool = FALSE
@@ -94,6 +95,7 @@ class PristupPotvrdama(Toplevel):
                 return self.__otkazano
 
             def izmeni(self):
+                sifra = self.__sifra_entry.get()
                 datum = self.ogranicenje_datuma()
                 if not datum:
                     return
@@ -110,10 +112,29 @@ class PristupPotvrdama(Toplevel):
                 if not radnik:
                     return
 
+                stop_bool = FALSE
+                for i in range(len(self.__podaci.gradjani)):
+                    if stop_bool == FALSE:
+                        if self.__podaci.gradjani[i].jmbg == self.__podaci.potvrde[indeks].gradjani.jmbg:
+                            for k in range(len(self.__podaci.gradjani[i].listaPotvrda)):
+                                messagebox.showerror("Greska", str(self.__podaci.gradjani[i].listaPotvrda[k].sifra) + " " + str(self.__sifra_entry.get()))
+                                if int(self.__podaci.gradjani[i].listaPotvrda[k].sifra) == int(self.__sifra_entry.get()):
+                                    messagebox.showerror("Greska", str(self.__podaci.gradjani[i].listaPotvrda[k]))
+                                    self.__podaci.gradjani[i].listaPotvrda.pop(k)
+                                    messagebox.showerror("Greska", str(self.__podaci.gradjani[i].listaPotvrda[k]))
+                                    stop_bool = TRUE
+                                    break
+                    else:
+                        break
+
                 self.__podaci.potvrde[indeks].datum = datum
                 self.__podaci.potvrde[indeks].doza = doza
                 self.__podaci.potvrde[indeks].gradjani = gradjani
                 self.__podaci.potvrde[indeks].zdrRadnik = radnik
+
+                for i in range(len(self.__podaci.gradjani)):
+                    if self.__podaci.gradjani[i].jmbg == gradjani.jmbg:
+                        self.__podaci.gradjani[i].listaPotvrda.append(Potvrda(sifra, datum, doza, gradjani, radnik))
 
                 self.update()
                 Podaci.sacuvaj(self.__podaci)
