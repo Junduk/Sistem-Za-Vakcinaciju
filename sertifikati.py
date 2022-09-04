@@ -85,7 +85,6 @@ class PristupSertifikatima(Toplevel):
                 if not gradjanin:
                     return
 
-                self.__podaci.sertifikati[indeks].sifra = sifra
                 self.__podaci.sertifikati[indeks].datum = datum
                 self.__podaci.sertifikati[indeks].gradjani = gradjanin
 
