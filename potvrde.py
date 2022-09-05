@@ -8,8 +8,17 @@ from datetime import date
 
 class PristupPotvrdama(Toplevel):
 
+    def sortiranjePotvrda(self):
+        for i in range(len(self.__podaci.potvrde)):
+            for j in range(0, len(self.__podaci.potvrde) - i - 1):
+                if self.__podaci.potvrde[j].datum.upper() > self.__podaci.potvrde[j + 1].datum.upper():
+                    temp = self.__podaci.potvrde[j]
+                    self.__podaci.potvrde[j] = self.__podaci.potvrde[j + 1]
+                    self.__podaci.potvrde[j + 1] = temp
+
     def popuni_listu(self, potvrda):
         self.__lista_listbox.delete(0, END)
+        self.sortiranjePotvrda()
         for potvrde in potvrda:
             self.__lista_listbox.insert(END,
                                         "{} {} {}".format(potvrde.gradjani.ime, potvrde.gradjani.prezime,
@@ -83,7 +92,7 @@ class PristupPotvrdama(Toplevel):
         self.__pretraga_entry["text"] = ""
         self.ocisti_labele()
 
-    def izmena(self, indeks, jmbgIzmene):
+    def izmena(self, indeks, sifraIzmene):
 
         class Izmena(Toplevel):
 
@@ -112,29 +121,29 @@ class PristupPotvrdama(Toplevel):
                 if not radnik:
                     return
 
-                stop_bool = FALSE
-                for i in range(len(self.__podaci.gradjani)):
-                    if stop_bool == FALSE:
-                        if self.__podaci.gradjani[i].jmbg == self.__podaci.potvrde[indeks].gradjani.jmbg:
-                            for k in range(len(self.__podaci.gradjani[i].listaPotvrda)):
-                                messagebox.showerror("Greska", str(self.__podaci.gradjani[i].listaPotvrda[k].sifra) + " " + str(self.__sifra_entry.get()))
-                                if int(self.__podaci.gradjani[i].listaPotvrda[k].sifra) == int(self.__sifra_entry.get()):
-                                    messagebox.showerror("Greska", str(self.__podaci.gradjani[i].listaPotvrda[k]))
-                                    self.__podaci.gradjani[i].listaPotvrda.pop(k)
-                                    messagebox.showerror("Greska", str(self.__podaci.gradjani[i].listaPotvrda[k]))
-                                    stop_bool = TRUE
-                                    break
-                    else:
-                        break
+                #stop_bool = FALSE
+                #for i in range(len(self.__podaci.gradjani)):
+                #    if stop_bool == FALSE:
+                #        if self.__podaci.gradjani[i].jmbg == self.__podaci.potvrde[indeks].gradjani.jmbg:
+                #            for k in range(len(self.__podaci.gradjani[i].listaPotvrda)):
+                #                messagebox.showerror("Greska", str(self.__podaci.gradjani[i].listaPotvrda[k].sifra) + " " + str(self.__sifra_entry.get()))
+                #                if int(self.__podaci.gradjani[i].listaPotvrda[k].sifra) == int(self.__sifra_entry.get()):
+                #                    messagebox.showerror("Greska", str(self.__podaci.gradjani[i].listaPotvrda[k]))
+                #                   self.__podaci.gradjani[i].listaPotvrda.pop(k)
+                #                   messagebox.showerror("Greska", str(self.__podaci.gradjani[i].listaPotvrda[k]))
+                #                    stop_bool = TRUE
+                #                    break
+                #    else:
+                #        break
 
                 self.__podaci.potvrde[indeks].datum = datum
                 self.__podaci.potvrde[indeks].doza = doza
                 self.__podaci.potvrde[indeks].gradjani = gradjani
                 self.__podaci.potvrde[indeks].zdrRadnik = radnik
 
-                for i in range(len(self.__podaci.gradjani)):
-                    if self.__podaci.gradjani[i].jmbg == gradjani.jmbg:
-                        self.__podaci.gradjani[i].listaPotvrda.append(Potvrda(sifra, datum, doza, gradjani, radnik))
+                #for i in range(len(self.__podaci.gradjani)):
+                #    if self.__podaci.gradjani[i].jmbg == gradjani.jmbg:
+                #        self.__podaci.gradjani[i].listaPotvrda.append(Potvrda(sifra, datum, doza, gradjani, radnik))
 
                 self.update()
                 Podaci.sacuvaj(self.__podaci)
@@ -389,11 +398,16 @@ class PristupPotvrdama(Toplevel):
         self.__izmena_button['state'] = NORMAL
         self.__obrisi_button['state'] = NORMAL
         self.__pretraga_entry["text"] = ""
+        for x in self.__podaci.potvrde:
+            if x.sifra == sifraIzmene:
+                i = self.__podaci.potvrde.index(x)
+                self.__lista_listbox.select_set(i)
+                self.popuni_labele(self.__podaci.potvrde[i])
 
     def dodavanje(self):
 
         class Dodavanje(Toplevel):
-
+            sifraIzmene = 0
             def izlaz(self):
                 self.destroy()
 
@@ -403,6 +417,8 @@ class PristupPotvrdama(Toplevel):
 
             def dodaj(self):
                 sifra = self.ogranicenje_sifre()
+                global sifraIzmene
+                sifraIzmene = sifra
                 if not sifra:
                     return
 
@@ -662,6 +678,12 @@ class PristupPotvrdama(Toplevel):
         self.__izmena_button['state'] = NORMAL
         self.__obrisi_button['state'] = NORMAL
         self.__pretraga_entry["text"] = ""
+        global sifraIzmene
+        for x in self.__podaci.potvrde:
+            if x.sifra == sifraIzmene:
+                i = self.__podaci.potvrde.index(x)
+                self.__lista_listbox.select_set(i)
+                self.popuni_labele(self.__podaci.potvrde[i])
 
     def __init__(self, root, podaci):
         super().__init__(root)
@@ -746,7 +768,7 @@ class PristupPotvrdama(Toplevel):
         for i in self.__podaci.potvrde:
             if naziv == str(i.gradjani.ime + " " + i.gradjani.prezime + " " + str(i.sifra)):
                 indeks = self.__podaci.potvrde.index(i)
-        self.izmena(indeks, self.__podaci.potvrde[indeks].gradjani.jmbg)
+        self.izmena(indeks, self.__podaci.potvrde[indeks].sifra)
 
     def indeksiranje2(self):
         broj = self.__lista_listbox.curselection()[0]

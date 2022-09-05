@@ -8,8 +8,17 @@ from datetime import date
 
 class PristupDozama(Toplevel):
 
+    def sortiranjeDoza(self):
+        for i in range(len(self.__podaci.doze)):
+            for j in range(0, len(self.__podaci.doze) - i - 1):
+                if self.__podaci.doze[j].datum.upper() > self.__podaci.doze[j + 1].datum.upper():
+                    temp = self.__podaci.doze[j]
+                    self.__podaci.doze[j] = self.__podaci.doze[j + 1]
+                    self.__podaci.doze[j + 1] = temp
+
     def popuni_listu(self, doza):
         self.__lista_listbox.delete(0, END)
+        self.sortiranjeDoza()
         for doze in doza:
             self.__lista_listbox.insert(END,
                                         "{} {} {}".format(doze.gradjani.ime, doze.gradjani.prezime, doze.datumtoString))
@@ -85,11 +94,10 @@ class PristupDozama(Toplevel):
         self.__pretraga_entry["text"] = ""
         self.ocisti_labele()
 
-
     def izmena(self, indeks, jmbgIzmene):
 
         class Izmena(Toplevel):
-
+            datumIzmene = 0
             def izlaz(self):
                 self.destroy()
 
@@ -99,6 +107,8 @@ class PristupDozama(Toplevel):
 
             def dodaj(self):
                 datum = self.ogranicenje_datuma()
+                global datumIzmene
+                datumIzmene = datum
                 if not datum:
                     return
 
@@ -380,11 +390,18 @@ class PristupDozama(Toplevel):
         self.__izmena_button['state'] = NORMAL
         self.__obrisi_button['state'] = NORMAL
         self.__pretraga_entry["text"] = ""
+        global datumIzmene
+        for x in self.__podaci.doze:
+            if x.gradjani.jmbg == jmbgIzmene and x.datum == datumIzmene:
+                i = self.__podaci.doze.index(x)
+                self.__lista_listbox.select_set(i)
+                self.popuni_labele(self.__podaci.doze[i])
 
     def dodavanje(self):
 
         class Dodavanje(Toplevel):
-
+            jmbgIzmene = 0
+            datumIzmene = 0
             def izlaz(self):
                 self.destroy()
 
@@ -394,6 +411,8 @@ class PristupDozama(Toplevel):
 
             def dodaj(self):
                 datum = self.ogranicenje_datuma()
+                global datumIzmene
+                datumIzmene = datum
                 if not datum:
                     return
 
@@ -410,6 +429,8 @@ class PristupDozama(Toplevel):
                     return
 
                 gradjanin = self.ogranicenje_gradjanina()
+                global jmbgIzmene
+                jmbgIzmene = gradjanin.jmbg
                 if not gradjanin:
                     return
 
@@ -649,6 +670,13 @@ class PristupDozama(Toplevel):
         self.__izmena_button['state'] = NORMAL
         self.__obrisi_button['state'] = NORMAL
         self.__pretraga_entry["text"] = ""
+        global jmbgIzmene
+        global datumIzmene
+        for x in self.__podaci.doze:
+            if x.gradjani.jmbg == jmbgIzmene and x.datum == datumIzmene:
+                i = self.__podaci.doze.index(x)
+                self.__lista_listbox.select_set(i)
+                self.popuni_labele(self.__podaci.doze[i])
 
     def __init__(self, root, podaci):
         super().__init__(root)

@@ -8,8 +8,17 @@ from datetime import date
 
 class PristupSertifikatima(Toplevel):
 
+    def sortiranjeSertifikata(self):
+        for i in range(len(self.__podaci.sertifikati)):
+            for j in range(0, len(self.__podaci.sertifikati) - i - 1):
+                if self.__podaci.sertifikati[j].datum.upper() > self.__podaci.sertifikati[j + 1].datum.upper():
+                    temp = self.__podaci.sertifikati[j]
+                    self.__podaci.sertifikati[j] = self.__podaci.sertifikati[j + 1]
+                    self.__podaci.sertifikati[j + 1] = temp
+
     def popuni_listu(self, sertifikat):
         self.__lista_listbox.delete(0, END)
+        self.sortiranjeSertifikata()
         for sertifikati in sertifikat:
             self.__lista_listbox.insert(END,
                                         "{} {} {}".format(sertifikati.gradjani.ime, sertifikati.gradjani.prezime,
@@ -76,7 +85,7 @@ class PristupSertifikatima(Toplevel):
         self.__pretraga_entry["text"] = ""
         self.ocisti_labele()
 
-    def izmena(self, indeks, jmbgIzmene):
+    def izmena(self, indeks, sifraIzmene):
 
         class Izmena(Toplevel):
 
@@ -307,11 +316,16 @@ class PristupSertifikatima(Toplevel):
         self.__izmena_button['state'] = NORMAL
         self.__obrisi_button['state'] = NORMAL
         self.__pretraga_entry["text"] = ""
+        for x in self.__podaci.sertifikati:
+            if x.sifra == sifraIzmene:
+                i = self.__podaci.sertifikati.index(x)
+                self.__lista_listbox.select_set(i)
+                self.popuni_labele(self.__podaci.sertifikati[i])
 
     def dodavanje(self):
 
         class Dodavanje(Toplevel):
-
+            sifraIzmene = 0
             def izlaz(self):
                 self.destroy()
 
@@ -321,6 +335,8 @@ class PristupSertifikatima(Toplevel):
 
             def dodaj(self):
                 sifra = self.ogranicenje_sifre()
+                global sifraIzmene
+                sifraIzmene = sifra
                 if not sifra:
                     return
 
@@ -536,6 +552,12 @@ class PristupSertifikatima(Toplevel):
         self.__izmena_button['state'] = NORMAL
         self.__obrisi_button['state'] = NORMAL
         self.__pretraga_entry["text"] = ""
+        global sifraIzmene
+        for x in self.__podaci.sertifikati:
+            if x.sifra == sifraIzmene:
+                i = self.__podaci.sertifikati.index(x)
+                self.__lista_listbox.select_set(i)
+                self.popuni_labele(self.__podaci.sertifikati[i])
 
     def __init__(self, root, podaci):
         super().__init__(root)
@@ -605,7 +627,7 @@ class PristupSertifikatima(Toplevel):
         for i in self.__podaci.sertifikati:
             if naziv == str(i.gradjani.ime + " " + i.gradjani.prezime + " " + str(i.sifra)):
                 indeks = self.__podaci.sertifikati.index(i)
-        self.izmena(indeks, self.__podaci.sertifikati[indeks].gradjani.jmbg)
+        self.izmena(indeks, self.__podaci.sertifikati[indeks].sifra)
 
     def indeksiranje2(self):
         broj = self.__lista_listbox.curselection()[0]

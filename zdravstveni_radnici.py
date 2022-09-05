@@ -6,8 +6,22 @@ from tkinter.ttk import Combobox
 
 class PristupZdravstvenimRadnicima(Toplevel):
 
+    def sortiranjeZdravstvenihRadnika(self):
+        for i in range(len(self.__podaci.zdrRadnici)):
+            for j in range(0, len(self.__podaci.zdrRadnici) - i - 1):
+                if self.__podaci.zdrRadnici[j].prezime.upper() > self.__podaci.zdrRadnici[j + 1].prezime.upper():
+                    temp = self.__podaci.zdrRadnici[j]
+                    self.__podaci.zdrRadnici[j] = self.__podaci.zdrRadnici[j + 1]
+                    self.__podaci.zdrRadnici[j + 1] = temp
+                elif self.__podaci.zdrRadnici[j].prezime.upper() == self.__podaci.zdrRadnici[j + 1].prezime.upper():
+                    if self.__podaci.zdrRadnici[j].ime.upper() > self.__podaci.zdrRadnici[j + 1].ime.upper():
+                        temp = self.__podaci.zdrRadnici[j]
+                        self.__podaci.zdrRadnici[j] = self.__podaci.zdrRadnici[j + 1]
+                        self.__podaci.zdrRadnici[j + 1] = temp
+
     def popuni_listu(self, radnici):
         self.__lista_listbox.delete(0, END)
+        self.sortiranjeZdravstvenihRadnika()
         for radnik in radnici:
             self.__lista_listbox.insert(END, "{} {}".format(radnik.ime, radnik.prezime))
         self.__izmena_button['state'] = DISABLED
@@ -65,7 +79,7 @@ class PristupZdravstvenimRadnicima(Toplevel):
         self.__pretraga_entry["text"] = ""
         self.ocisti_labele()
 
-    def izmena(self, indeks):
+    def izmena(self, indeks, jmbgIzmene):
 
         class Izmena(Toplevel):
 
@@ -282,12 +296,19 @@ class PristupZdravstvenimRadnicima(Toplevel):
             return
 
         self.popuni_listu(self.__podaci.zdrRadnici)
+        self.__izmena_button['state'] = NORMAL
+        self.__obrisi_button['state'] = NORMAL
         self.__pretraga_entry["text"] = ""
+        for x in self.__podaci.zdrRadnici:
+            if x.jmbg == jmbgIzmene:
+                i = self.__podaci.zdrRadnici.index(x)
+                self.__lista_listbox.select_set(i)
+                self.popuni_labele(self.__podaci.zdrRadnici[i])
 
     def dodavanje(self):
 
         class Dodavanje(Toplevel):
-
+            jmbgIzmene = 0
             def izlaz(self):
                 self.destroy()
 
@@ -297,6 +318,8 @@ class PristupZdravstvenimRadnicima(Toplevel):
 
             def dodaj(self):
                 jmbg = self.ogranicenje_jmbg()
+                global jmbgIzmene
+                jmbgIzmene = jmbg
                 if not jmbg:
                     return
 
@@ -489,7 +512,15 @@ class PristupZdravstvenimRadnicima(Toplevel):
             return
 
         self.popuni_listu(self.__podaci.zdrRadnici)
+        self.__izmena_button['state'] = NORMAL
+        self.__obrisi_button['state'] = NORMAL
         self.__pretraga_entry["text"] = ""
+        global jmbgIzmene
+        for x in self.__podaci.zdrRadnici:
+            if x.jmbg == jmbgIzmene:
+                i = self.__podaci.zdrRadnici.index(x)
+                self.__lista_listbox.select_set(i)
+                self.popuni_labele(self.__podaci.zdrRadnici[i])
 
     def __init__(self, root, podaci):
         super().__init__(root)
@@ -558,7 +589,7 @@ class PristupZdravstvenimRadnicima(Toplevel):
         for i in self.__podaci.zdrRadnici:
             if naziv == str(i.ime + " " + i.prezime):
                 indeks = self.__podaci.zdrRadnici.index(i)
-        self.izmena(indeks)
+        self.izmena(indeks, self.__podaci.zdrRadnici[indeks].jmbg)
 
     def indeksiranje2(self):
         broj = self.__lista_listbox.curselection()[0]

@@ -6,8 +6,17 @@ from datetime import date
 
 class PristupVakcinama(Toplevel):
 
+    def sortiranjeVakcina(self):
+        for i in range(len(self.__podaci.vakcine)):
+            for j in range(0, len(self.__podaci.vakcine) - i - 1):
+                if self.__podaci.vakcine[j].naziv.upper() > self.__podaci.vakcine[j + 1].naziv.upper():
+                    temp = self.__podaci.vakcine[j]
+                    self.__podaci.vakcine[j] = self.__podaci.vakcine[j + 1]
+                    self.__podaci.vakcine[j + 1] = temp
+
     def popuni_listu(self, vakcine):
         self.__lista_listbox.delete(0, END)
+        self.sortiranjeVakcina()
         for vakcina in vakcine:
             self.__lista_listbox.insert(END, "{} {}".format(vakcina.naziv, vakcina.serijskiBroj))
         self.__izmena_button['state'] = DISABLED
@@ -61,7 +70,7 @@ class PristupVakcinama(Toplevel):
         self.__pretraga_entry["text"] = ""
         self.ocisti_labele()
 
-    def izmena(self, indeks):
+    def izmena(self, indeks, serijskiBrojIzmene):
 
         class Izmena(Toplevel):
 
@@ -311,14 +320,19 @@ class PristupVakcinama(Toplevel):
         if izmena_prozor.otkazano:
             return
         self.popuni_listu(self.__podaci.vakcine)
-        self.__pretraga_entry["text"] = ""
         self.__izmena_button['state'] = NORMAL
         self.__obrisi_button['state'] = NORMAL
+        self.__pretraga_entry["text"] = ""
+        for x in self.__podaci.vakcine:
+            if x.serijskiBroj == serijskiBrojIzmene:
+                i = self.__podaci.vakcine.index(x)
+                self.__lista_listbox.select_set(i)
+                self.popuni_labele(self.__podaci.vakcine[i])
 
     def dodavanje(self):
 
         class Dodavanje(Toplevel):
-
+            serijskiBrojIzmene = 0
             def izlaz(self):
                 self.destroy()
 
@@ -332,6 +346,8 @@ class PristupVakcinama(Toplevel):
                     return
 
                 serijskiBroj = self.ogranicenje_serijskog_broja()
+                global serijskiBrojIzmene
+                serijskiBrojIzmene = serijskiBroj
                 if not serijskiBroj:
                     return
 
@@ -556,6 +572,12 @@ class PristupVakcinama(Toplevel):
         self.__izmena_button['state'] = NORMAL
         self.__obrisi_button['state'] = NORMAL
         self.__pretraga_entry["text"] = ""
+        global serijskiBrojIzmene
+        for x in self.__podaci.vakcine:
+            if x.serijskiBroj == serijskiBrojIzmene:
+                i = self.__podaci.vakcine.index(x)
+                self.__lista_listbox.select_set(i)
+                self.popuni_labele(self.__podaci.vakcine[i])
 
     def __init__(self, root, podaci):
         super().__init__(root)
@@ -618,7 +640,7 @@ class PristupVakcinama(Toplevel):
         for i in self.__podaci.vakcine:
             if naziv == str(i.naziv + " " + str(i.serijskiBroj)):
                 indeks = self.__podaci.vakcine.index(i)
-        self.izmena(indeks)
+        self.izmena(indeks, self.__podaci.vakcine[indeks].serijskiBroj)
 
     def indeksiranje2(self):
         broj = self.__lista_listbox.curselection()[0]

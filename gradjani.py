@@ -8,22 +8,21 @@ import datetime
 class PristupGradjanima(Toplevel):
 
     def sortiranjeGradjana(self):
-        for x in self.__podaci.gradjani:
-            indeks = self.__podaci.gradjani.index(x)
-            if indeks != len(self.__podaci.gradjani) - 1:
-                i = self.__podaci.gradjani[indeks + 1]
-                if x.ime < i.ime:
-                    k = x
-                    self.__podaci.gradjani[indeks] = i
-                    self.__podaci.gradjani[indeks + 1] = k
-                elif x.ime == i.ime:
-                    if x.prezime < i.prezime:
-                        k = x
-                        self.__podaci.gradjani[indeks] = i
-                        self.__podaci.gradjani[indeks + 1] = k
+        for i in range(len(self.__podaci.gradjani)):
+            for j in range(0, len(self.__podaci.gradjani) - i - 1):
+                if self.__podaci.gradjani[j].prezime.upper() > self.__podaci.gradjani[j + 1].prezime.upper():
+                    temp = self.__podaci.gradjani[j]
+                    self.__podaci.gradjani[j] = self.__podaci.gradjani[j + 1]
+                    self.__podaci.gradjani[j + 1] = temp
+                elif self.__podaci.gradjani[j].prezime.upper() == self.__podaci.gradjani[j + 1].prezime.upper():
+                    if self.__podaci.gradjani[j].ime.upper() > self.__podaci.gradjani[j + 1].ime.upper():
+                        temp = self.__podaci.gradjani[j]
+                        self.__podaci.gradjani[j] = self.__podaci.gradjani[j + 1]
+                        self.__podaci.gradjani[j + 1] = temp
 
     def popuni_listu(self, gradjani):
         self.__lista_listbox.delete(0, END)
+        self.sortiranjeGradjana()
         for gradjanin in gradjani:
             self.__lista_listbox.insert(END, "{} {}".format(gradjanin.ime, gradjanin.prezime))
         self.__izmena_button['state'] = DISABLED
@@ -284,7 +283,6 @@ class PristupGradjanima(Toplevel):
         self.wait_window(izmena_prozor)
         if izmena_prozor.otkazano:
             return
-        self.sortiranjeGradjana()
         self.popuni_listu(self.__podaci.gradjani)
         self.__pretraga_entry["text"] = ""
         self.__izmena_button['state'] = NORMAL
@@ -298,7 +296,7 @@ class PristupGradjanima(Toplevel):
     def dodavanje(self):
 
         class Dodavanje(Toplevel):
-
+            jmbgIzmene = 0
             def izlaz(self):
                 self.destroy()
 
@@ -308,6 +306,8 @@ class PristupGradjanima(Toplevel):
 
             def dodaj(self):
                 jmbg = self.ogranicenje_jmbg()
+                global jmbgIzmene
+                jmbgIzmene = jmbg
                 if not jmbg:
                     return
 
@@ -503,17 +503,15 @@ class PristupGradjanima(Toplevel):
             return
 
         self.popuni_listu(self.__podaci.gradjani)
-
-        #index = -1
-        #for i in self.__lista_listbox:
-        #    index = index + 1
-        #    if i == self.__podaci.gradjani(END).ime + " " + self.__podaci.gradjani(END).prezime:
-        #        self.__lista_listbox.activate(index)
-        #        self.popuni_labele(self.__podaci.gradjani(END))
-
         self.__izmena_button['state'] = NORMAL
         self.__obrisi_button['state'] = NORMAL
         self.__pretraga_entry["text"] = ""
+        global jmbgIzmene
+        for x in self.__podaci.gradjani:
+            if x.jmbg == jmbgIzmene:
+                i = self.__podaci.gradjani.index(x)
+                self.__lista_listbox.select_set(i)
+                self.popuni_labele(self.__podaci.gradjani[i])
 
     def __init__(self, root, podaci):
         super().__init__(root)
