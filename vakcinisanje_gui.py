@@ -18,6 +18,8 @@ class GlavniProzor(Tk):
         gradjani_prozor = PristupGradjanima(self, self.__podaci)
         self.wait_window(gradjani_prozor)
         if gradjani_prozor.otkazano:
+            self.__listbox.delete(0, END)
+            self.popuni_listbox(self.__podaci.gradjani)
             return
 
     def komanda_radnici(self):
