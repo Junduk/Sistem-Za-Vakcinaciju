@@ -9,7 +9,7 @@ class PristupGradjanima(Toplevel):
 
     def sortiranjeGradjana(self):
         for i in range(len(self.__podaci.gradjani)):
-            for j in range(0, len(self.__podaci.gradjani) - i - 1):
+            for j in range(len(self.__podaci.gradjani) - i - 1):
                 if self.__podaci.gradjani[j].prezime.upper() > self.__podaci.gradjani[j + 1].prezime.upper():
                     temp = self.__podaci.gradjani[j]
                     self.__podaci.gradjani[j] = self.__podaci.gradjani[j + 1]
@@ -58,7 +58,6 @@ class PristupGradjanima(Toplevel):
             if str(i.ime + " " + i.prezime) == naziv:
                 gradjanin = i
         self.popuni_labele(gradjanin)
-
         self.__izmena_button['state'] = NORMAL
         self.__obrisi_button['state'] = NORMAL
 
